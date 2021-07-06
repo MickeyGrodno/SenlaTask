@@ -8,8 +8,8 @@ import java.util.List;
 
 public class MainPage implements PageObject{
     private WebDriver driver;
-    private By logoutButton = By.className("icon-signout");
-    private By alertMessage = By.id("flash");
+    private final By LOGOUT_BUTTON = By.className("icon-signout");
+    private final By ALERT_MESSAGE = By.id("flash");
     private List<WebElement> elements;
 
     public MainPage(WebDriver driver) {
@@ -17,12 +17,12 @@ public class MainPage implements PageObject{
     }
 
     public PageObject logoutFromPage() {
-        driver.findElement(logoutButton).click();
+        driver.findElement(LOGOUT_BUTTON).click();
         return new LoginPage(driver);
     }
 
     public String getAlertMessage() {
-        elements = driver.findElements(alertMessage);
+        elements = driver.findElements(ALERT_MESSAGE);
         if(elements.size() == 1) {
             return elements.get(0).getText();
         } else {

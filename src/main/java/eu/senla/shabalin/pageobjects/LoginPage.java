@@ -8,10 +8,10 @@ import java.util.List;
 
 public class LoginPage implements PageObject{
     private WebDriver driver;
-    private By usernameField = By.id("username");
-    private By passwordField = By.id("password");
-    private By loginButton = By.className("radius");
-    private By alertMessage = By.id("flash");
+    private final By USERNAME_FIELD = By.id("username");
+    private final By PASSWORD_FIELD = By.id("password");
+    private final By LOGIN_BUTTON = By.className("radius");
+    private final By ALERT_MESSAGE = By.id("flash");
     private List<WebElement> elements;
 
     public LoginPage (WebDriver driver) {
@@ -19,9 +19,9 @@ public class LoginPage implements PageObject{
     }
 
     public PageObject loginWithUserCredentials(String userName, String userPassword) {
-        driver.findElement(usernameField).sendKeys(userName);
-        driver.findElement(passwordField).sendKeys(userPassword);
-        driver.findElement(loginButton).click();
+        driver.findElement(USERNAME_FIELD).sendKeys(userName);
+        driver.findElement(PASSWORD_FIELD).sendKeys(userPassword);
+        driver.findElement(LOGIN_BUTTON).click();
 
         if (driver.getCurrentUrl().equals("http://the-internet.herokuapp.com/login")) {
             return this;
@@ -31,7 +31,7 @@ public class LoginPage implements PageObject{
     }
 
     public String getAlertMessage() {
-        elements = driver.findElements(alertMessage);
+        elements = driver.findElements(ALERT_MESSAGE);
         if(elements.size() == 1) {
             return elements.get(0).getText();
         } else {
