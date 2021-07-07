@@ -7,7 +7,7 @@ public class DynamicContentTest extends DataFixture {
 
     @Test
     public void dynamicContentIsPresentInPageTest() {
-        driver.get(property.getProperty("dynamic.content.url"));
+        driver.get(property.getProperty("dynamicContentUrl"));
         DynamicContent content = new DynamicContent(driver);
         assertTrue(content.isDynamicContentPresent());
     }

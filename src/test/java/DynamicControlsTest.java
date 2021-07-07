@@ -10,7 +10,7 @@ public class DynamicControlsTest extends DataFixture {
 
     @BeforeEach
     public void beforeTest() {
-        driver.get(property.getProperty("dynamic.controls.url"));
+        driver.get(property.getProperty("dynamicControlsUrl"));
     }
 
     @Test
