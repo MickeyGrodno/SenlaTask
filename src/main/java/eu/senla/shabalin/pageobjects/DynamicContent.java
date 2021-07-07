@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicContent implements PageObject{
@@ -22,27 +23,32 @@ public class DynamicContent implements PageObject{
         PageFactory.initElements(driver, this);
     }
 
-    public int getDynamicContentCount() {
-        int count = 0;
-        List<WebElement> list = elementList;
+
+
+    public boolean isDynamicContentPresent() {
+        boolean dynamicContentIsPresent = false;
+
+        List<String> oldElementsImgLinkAndText = new ArrayList<>();
+        List<String> newElementsImgLinkAndText = new ArrayList<>();
+
+        elementList.forEach(a -> {
+            oldElementsImgLinkAndText.add(a.findElement(By.tagName("img")).getAttribute("src"));
+            oldElementsImgLinkAndText.add(a.findElement(By.className("large-10")).getText()); }
+        );
+
         clickHereLink.click();
-        List<WebElement> newElementList = driver.findElements(By.cssSelector(dynamicRowLocator));
-        for(int i = 0; i < elementList.size(); i++) {
-            if(elementList.get(i).findElement(By.tagName("img")).getAttribute("src")
-                    .equals(newElementList.get(i).findElement(By.tagName("img")).getAttribute("src")) &&
-                    elementList.get(i).findElement(By.className("large-10")).getText()
-                            .equals(newElementList.get(i).findElement(By.className("large-10")).getText())) {
 
+        elementList.forEach(a -> {
+            newElementsImgLinkAndText.add(a.findElement(By.tagName("img")).getAttribute("src"));
+            newElementsImgLinkAndText.add(a.findElement(By.className("large-10")).getText()); }
+        );
 
-                System.out.println(elementList.get(i).findElement(By.tagName("img")).getAttribute("src"));
-                System.out.println(newElementList.get(i).findElement(By.tagName("img")).getAttribute("src"));
-                System.out.println(elementList.get(i).findElement(By.className("large-10")).getText());
-                System.out.println(newElementList.get(i).findElement(By.className("large-10")).getText());
-
-                count += 1;
+        for(int i = 0; i < oldElementsImgLinkAndText.size(); i++) {
+            if(!oldElementsImgLinkAndText.get(i).equals(newElementsImgLinkAndText.get(i))) {
+                dynamicContentIsPresent = true;
+                break;
             }
         }
-
-        return count;
+        return dynamicContentIsPresent;
     }
 }

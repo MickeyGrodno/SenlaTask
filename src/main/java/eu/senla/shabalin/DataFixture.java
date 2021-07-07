@@ -8,11 +8,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 
 public class DataFixture {
     protected static WebDriver driver;
+    protected static Properties property;
 
     @BeforeAll
     public static void beforeAllTest() {
@@ -20,7 +24,13 @@ public class DataFixture {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1200", "--no-sandbox");
         driver = new ChromeDriver(options);
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        property = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream("src/main/resources/config.properties");
+            property.load(fis);
+        } catch (IOException e) {
+            System.err.println("Property file don't found!");
+        }
     }
 
     @AfterAll
