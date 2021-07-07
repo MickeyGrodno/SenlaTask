@@ -18,7 +18,7 @@ public class MainPage implements PageObject{
 
     public PageObject logoutFromPage() {
         driver.findElement(LOGOUT_BUTTON).click();
-        return new LoginPage(driver);
+        return new DynamicContent(driver);
     }
 
     public String getAlertMessage() {
