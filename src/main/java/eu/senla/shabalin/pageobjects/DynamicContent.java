@@ -24,7 +24,7 @@ public class DynamicContent implements PageObject{
 
     public int getDynamicContentCount() {
         int count = 0;
-
+        List<WebElement> list = elementList;
         clickHereLink.click();
         List<WebElement> newElementList = driver.findElements(By.cssSelector(dynamicRowLocator));
         for(int i = 0; i < elementList.size(); i++) {

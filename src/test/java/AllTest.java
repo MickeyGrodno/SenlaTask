@@ -8,6 +8,6 @@ public class AllTest extends DataFixture {
     public void first() throws InterruptedException {
         driver.get("http://the-internet.herokuapp.com/dynamic_content");
         DynamicContent content = new DynamicContent(driver);
-        content.getDynamicContentCount();
+        System.out.println(content.getDynamicContentCount());
 }
 }
