@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -23,16 +24,21 @@ public class DynamicContent implements PageObject{
 
     public int getDynamicContentCount() {
         int count = 0;
-        clickHereLink.click();
-        clickHereLink.click();
+
         clickHereLink.click();
         List<WebElement> newElementList = driver.findElements(By.cssSelector(dynamicRowLocator));
-
         for(int i = 0; i < elementList.size(); i++) {
-            if(elementList.get(i).findElement(By.className("large-2")).getAttribute("src")
-                    .equals(newElementList.get(i).findElement(By.className("large-2")).getAttribute("src")) &&
+            if(elementList.get(i).findElement(By.tagName("img")).getAttribute("src")
+                    .equals(newElementList.get(i).findElement(By.tagName("img")).getAttribute("src")) &&
                     elementList.get(i).findElement(By.className("large-10")).getText()
                             .equals(newElementList.get(i).findElement(By.className("large-10")).getText())) {
+
+
+                System.out.println(elementList.get(i).findElement(By.tagName("img")).getAttribute("src"));
+                System.out.println(newElementList.get(i).findElement(By.tagName("img")).getAttribute("src"));
+                System.out.println(elementList.get(i).findElement(By.className("large-10")).getText());
+                System.out.println(newElementList.get(i).findElement(By.className("large-10")).getText());
+
                 count += 1;
             }
         }
