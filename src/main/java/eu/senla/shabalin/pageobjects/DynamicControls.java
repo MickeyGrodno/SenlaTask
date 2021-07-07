@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 
-public class DynamicControls {
+public class DynamicControls implements PageObject{
     private WebDriver driver;
     @FindBy(css = "form#checkbox-example>button")
     private WebElement removeOrAddCheckboxButton;
