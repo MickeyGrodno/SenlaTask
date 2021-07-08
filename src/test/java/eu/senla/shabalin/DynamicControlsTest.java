@@ -1,4 +1,5 @@
-import eu.senla.shabalin.DataFixture;
+package eu.senla.shabalin;
+
 import eu.senla.shabalin.pageobjects.DynamicControls;
 import static org.junit.jupiter.api.Assertions.*;
 

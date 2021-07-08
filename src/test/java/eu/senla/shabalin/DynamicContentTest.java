@@ -1,3 +1,5 @@
+package eu.senla.shabalin;
+
 import eu.senla.shabalin.DataFixture;
 import eu.senla.shabalin.pageobjects.DynamicContent;
 import static org.junit.jupiter.api.Assertions.*;

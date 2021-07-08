@@ -1,3 +1,5 @@
+package eu.senla.shabalin;
+
 import eu.senla.shabalin.DataFixture;
 import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
@@ -20,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-public class AllTest extends DataFixture {
+public class LoginPageTest extends DataFixture {
     private LoginPage loginPage;
     private final String correctLogin = property.getProperty("correctLogin");
     private final String incorrectLogin = property.getProperty("incorrectLogin");
