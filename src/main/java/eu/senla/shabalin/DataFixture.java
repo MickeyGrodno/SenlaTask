@@ -2,6 +2,7 @@ package eu.senla.shabalin;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -17,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class DataFixture {
     protected static WebDriver driver;
     protected static Properties property;
+    protected static ChromeOptions options;
 
     @BeforeAll
     public static void beforeAllTest() {
         WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
+        options = new ChromeOptions();
         options.addArguments("--window-size=1920,1200", "--no-sandbox");
-//        options.setHeadless(true);
-        driver = new ChromeDriver(options);
+        options.setHeadless(true);
         property = new Properties();
         try {
             FileInputStream fis = new FileInputStream("src/main/resources/config.properties");
@@ -34,8 +35,8 @@ public class DataFixture {
         }
     }
 
-    @AfterAll
-    public static void afterAllTest() {
+    @AfterEach
+    public void afterTest() {
         driver.quit();
     }
 }

@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -72,6 +73,7 @@ public class AllTest extends DataFixture {
 
     @BeforeEach
     public void beforeTest() {
+        driver = new ChromeDriver(options);
         driver.get(loginPageUrl);
     }
 
