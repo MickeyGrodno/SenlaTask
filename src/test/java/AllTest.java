@@ -2,6 +2,7 @@ import eu.senla.shabalin.DataFixture;
 import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AllTest extends DataFixture {
@@ -22,28 +23,28 @@ public class AllTest extends DataFixture {
     }
 
     @Test
-    public void loginWithIncorrectLoginAndIncorrectPassword() {
+    public void loginWithIncorrectLoginAndIncorrectPasswordTest() {
         loginPage = new LoginPage(driver);
         loginPage.loginWithUserCredentials(incorrectLogin, incorrectPassword);
         assertUrlAndAlertMessage(loginPageUrl, "Your username is invalid!\n×");
     }
 
     @Test
-    public void loginWithCorrectLoginAndIncorrectPassword() {
+    public void loginWithCorrectLoginAndIncorrectPasswordTest() {
         loginPage = new LoginPage(driver);
         loginPage.loginWithUserCredentials(correctLogin, incorrectPassword);
         assertUrlAndAlertMessage(loginPageUrl, "Your password is invalid!\n×");
     }
 
     @Test
-    public void loginWithCorrectLoginAndCorrectPassword() {
+    public void loginWithCorrectLoginAndCorrectPasswordTest() {
         loginPage = new LoginPage(driver);
         mainPage = (MainPage) loginPage.loginWithUserCredentials(correctLogin, correctPassword);
         assertUrlAndAlertMessage(mainPageUrl, "You logged into a secure area!\n×");
     }
 
     @Test
-    public void SuccessLogoutFromMainPage() {
+    public void SuccessLogoutFromMainPageTest() {
         loginPage = new LoginPage(driver);
         mainPage = (MainPage) loginPage.loginWithUserCredentials(correctLogin, correctPassword);
         loginPage = (LoginPage) mainPage.logoutFromPage();
