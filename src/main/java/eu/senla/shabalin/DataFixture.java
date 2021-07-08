@@ -19,6 +19,7 @@ public class DataFixture {
         System.setProperty("webdriver.chrome.driver", "src/main/java/eu/senla/shabalin/driver/chromedriver91.0.4472.101");
         options = new ChromeOptions();
         options.addArguments("--window-size=1920,1200", "--no-sandbox");
+        options.setHeadless(true);
     }
 
     @BeforeEach
