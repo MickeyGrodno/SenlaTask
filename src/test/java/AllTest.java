@@ -1,10 +1,23 @@
 import eu.senla.shabalin.DataFixture;
 import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class AllTest extends DataFixture {
     private LoginPage loginPage;
@@ -17,10 +30,44 @@ public class AllTest extends DataFixture {
     private SoftAssertions assertions = new SoftAssertions();
     private MainPage mainPage;
 
-    private void assertUrlAndAlertMessage(String pageUrl, String alertMessage) {
+    @Step("Checking for the presence of the Url '{pageUrl}' page and alert message 'alertMessage' ")
+    private void assertUrlAndAlertMessage(String pageUrl, String alertMessage){
+        getExpectedParametersOnTxt(pageUrl, alertMessage);
+        takeScreenShot();
         assertions.assertThat(driver.getCurrentUrl()).as("check url").isEqualTo(pageUrl);
         assertions.assertThat(loginPage.getAlertMessage()).as("check message").isEqualTo(alertMessage);
         assertions.assertAll();
+    }
+
+    @Attachment
+    private byte[] takeScreenShot() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(
+                    new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())),
+                    "png",
+                    baos);
+            baos.flush();
+            byte[] imageInByte = baos.toByteArray();
+            baos.close();
+            return imageInByte;
+        } catch (AWTException | IOException e) {
+            System.err.println("Failed to create or save screenshot");
+        }
+        return null;
+    }
+
+    @Attachment(value = "Вложение")
+    private byte[] getExpectedParametersOnTxt(String pageUrl, String alertMessage) {
+        List<String> list = Arrays.asList(pageUrl, alertMessage);
+        Path file = Paths.get("src/main/resources/testreportdata/"+LocalDateTime.now());
+        try {
+            Files.write(file, list, StandardCharsets.UTF_8);
+            return Files.readAllBytes(file);
+        } catch (IOException e) {
+            System.err.println("File not found!");
+        }
+        return null;
     }
 
     @BeforeEach

@@ -23,6 +23,7 @@ public class DataFixture {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1200", "--no-sandbox");
+//        options.setHeadless(true);
         driver = new ChromeDriver(options);
         property = new Properties();
         try {
