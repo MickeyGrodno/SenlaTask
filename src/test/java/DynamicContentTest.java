@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 public class DynamicContentTest extends DataFixture {
 
-    @Disabled
     @Test
     public void dynamicContentIsPresentInPageTest() {
         driver.get(property.getProperty("dynamicContentUrl"));
