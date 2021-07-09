@@ -1,4 +1,4 @@
-Feature: login page and home page test #1.
+Feature: login page and home page test.
 
   Scenario: Unsuccessful login with incorrect login and incorrect password
 
@@ -22,7 +22,7 @@ Feature: login page and home page test #1.
     When type to input with name "Username" text: "tomsmith"
     And type to input with name "Password" text: "SuperSecretPassword!"
     And press button with text "Login"
-    Then verify that page with url "http://the-internet.herokuapp.com/secure" is opened and element with text "You logged out of the secure area!" should exist
+    Then verify that page with url "http://the-internet.herokuapp.com/secure" is opened and element with text "You logged into a secure area!" should exist
 
   Scenario: Successful logout with correct login and correct password
 

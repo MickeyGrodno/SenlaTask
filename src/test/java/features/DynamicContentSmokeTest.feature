@@ -1,6 +1,6 @@
-Feature: login page and home page test.
+Feature: DynamicContent page test.
 
-Scenario: Successful logout with correct login and correct password
+Scenario: Successful check for dynamic content on the page
 
   Given open "http://the-internet.herokuapp.com/dynamic_content"
   And received content with characters and text

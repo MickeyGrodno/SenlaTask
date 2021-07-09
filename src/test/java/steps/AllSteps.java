@@ -1,9 +1,6 @@
 package steps;
 
-import com.codeborne.selenide.Browser;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -25,8 +22,9 @@ public class AllSteps {
 
     @Before
     public void browserSettings() {
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "1920x1080";
+//        Configuration.holdBrowserOpen = true;
+//        Configuration.browserSize = "1920x1080";
+        Configuration.headless = true;
     }
 
     @Given("^open \"([^\"]*)\"")
@@ -42,9 +40,16 @@ public class AllSteps {
     }
 
     @And("^press button with text \"([^\"]*)\"$")
-    public void pressButton(String button)
+    public void pressButton(String buttonText)
     {
-        $(By.xpath("//i [text()=' "+button+"']")).click();
+        SelenideElement button = $(byXpath("//button [contains(text(), '"+buttonText+"')]"));
+        if(button.exists()) {
+            button.click();
+            button.shouldBe(Condition.hidden);
+        }
+        else {
+            $(byXpath("//i [contains(text(), '" + buttonText + "')]")).click();
+        }
     }
 
     @And("^received content with characters and text")
@@ -59,6 +64,11 @@ public class AllSteps {
     @And("^click to link with text \"([^\"]*)\"$")
     public void clickLinkWithText(String linkText) {
         $(withText(linkText)).click();
+    }
+
+    @And("^click checkbox")
+    public void clickCheckbox() {
+        $(byXpath(("//input[@type='checkbox']"))).click();
     }
 
     @Then("^verify that content before button click is different from content after button click")
@@ -77,8 +87,18 @@ public class AllSteps {
     @Then("^element with text \"([^\"]*)\" should exist")
     public void elementWithTextShouldExist(String elementText)
     {
-        assertTrue($$(withText(elementText)).size() == 1);
+        assertTrue($(withText(elementText)).shouldBe(Condition.exist).exists());
 
+    }
+
+    @Then("^the checkbox will be removed")
+    public void isCheckboxRemoved() {
+        assertTrue($(byId("checkbox")).shouldBe(Condition.hidden).is(Condition.hidden));
+    }
+
+    @Then("^the checkbox will be added")
+    public void isCheckboxAdded() {
+        assertTrue($(byId("checkbox")).exists());
     }
 
     @Then("^verify that page with url \"([^\"]*)\" is opened and element with text \"([^\"]*)\" should exist$")
@@ -86,7 +106,25 @@ public class AllSteps {
     {
         SoftAssertions assertions = new SoftAssertions();
         assertions.assertThat(url()).as("Check url").isEqualTo(verifyUrl);
-        assertions.assertThat($$(withText(elementText)).size())
-                .as("Checking for the presence of an element").isEqualTo(1);
+        assertions.assertThat($(withText(elementText)).shouldBe(Condition.exist).exists())
+                .as("Checking for the presence of an element").isEqualTo(true);
+    }
+
+    @Then("^checkbox changes state to \"([^\"]*)\"$")
+    public void checkboxStatusCheck(String status) {
+        if(status.equals("selected")) {
+            assertTrue($(byXpath("//input[@type='checkbox']")).isSelected());
+        } else {
+            assertTrue(!$(byXpath("//input[@type='checkbox']")).isSelected());
+        }
+    }
+
+    @Then("^text field changes state to \"([^\"]*)\"$")
+    public void textFieldStatusCheck(String status) {
+        if(status.equals("enabled")) {
+            assertTrue($("form#input-example>input").isEnabled());
+        } else {
+            assertTrue(!$("form#input-example>input").isEnabled());
+        }
     }
 }
