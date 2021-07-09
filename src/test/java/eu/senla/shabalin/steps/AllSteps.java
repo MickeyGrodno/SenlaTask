@@ -1,4 +1,4 @@
-package steps;
+package eu.senla.shabalin.steps;
 
 import com.codeborne.selenide.*;
 import cucumber.api.java.Before;
