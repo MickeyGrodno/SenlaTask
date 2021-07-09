@@ -1,6 +1,6 @@
-Feature: login page and home page test.
+Feature: login page and home page test #1.
 
-  Scenario: login with incorrect login and incorrect password
+  Scenario: Unsuccessful login with incorrect login and incorrect password
 
     Given open "http://the-internet.herokuapp.com/login"
     When type to input with name "Username" text: "incorrectName"
@@ -8,7 +8,7 @@ Feature: login page and home page test.
     And press button with text "Login"
     Then element with text "Your username is invalid!" should exist
 
-  Scenario: login with correct login and incorrect password
+  Scenario: Unsuccessful login with correct login and incorrect password
 
     Given open "http://the-internet.herokuapp.com/login"
     When type to input with name "Username" text: "tomsmith"
@@ -16,7 +16,7 @@ Feature: login page and home page test.
     And press button with text "Login"
     Then element with text "Your password is invalid!" should exist
 
-  Scenario: login with correct login and correct password
+  Scenario: Successful login with correct login and correct password
 
     Given open "http://the-internet.herokuapp.com/login"
     When type to input with name "Username" text: "tomsmith"
@@ -24,7 +24,7 @@ Feature: login page and home page test.
     And press button with text "Login"
     Then verify that page with url "http://the-internet.herokuapp.com/secure" is opened and element with text "You logged out of the secure area!" should exist
 
-  Scenario: login with correct login and correct password
+  Scenario: Successful logout with correct login and correct password
 
     Given open "http://the-internet.herokuapp.com/login"
     When type to input with name "Username" text: "tomsmith"
