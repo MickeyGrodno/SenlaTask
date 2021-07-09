@@ -1,6 +1,5 @@
 package steps;
 
-import com.codeborne.selenide.Condition;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -35,8 +34,8 @@ public class LoginPageStepDefs {
     @Then("^element with text \"([^\"]*)\" should exist")
     public void elementWithTextShouldExist(String elementText)
     {
-//        $(By.xpath("//div [contains(text(), '"+elementText+"')]")).shouldBe(Condition.visible);
-        $(withText(elementText)).shouldBe(Condition.visible);
+        assertTrue($$(withText(elementText)).size() == 1);
+
     }
 
     @Then("^verify that page with url \"([^\"]*)\" is opened and element with text \"([^\"]*)\" should exist$")
@@ -44,6 +43,7 @@ public class LoginPageStepDefs {
     {
         SoftAssertions assertions = new SoftAssertions();
         assertions.assertThat(url()).as("Check url").isEqualTo(verifyUrl);
-        assertions.assertThat($(withText(elementText)).shouldBe(Condition.exist).as("sa");
+        assertions.assertThat($$(withText(elementText)).size())
+                .as("Checking for the presence of an element").isEqualTo(1);
     }
 }
