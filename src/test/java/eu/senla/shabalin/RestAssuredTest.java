@@ -30,6 +30,7 @@ public class RestAssuredTest {
                 .statusCode(200)
                 .extract().response();
 
+        // Способ №1
         String allJson = response.body().asString();
         JSONObject jsonObject = new JSONObject(allJson);
         JSONArray data = jsonObject.getJSONArray("data");
@@ -37,9 +38,8 @@ public class RestAssuredTest {
                 .readValue(data.toString(), objectMapper.getTypeFactory()
                         .constructCollectionType(List.class, User.class));
 
-
+        // Способ №2
         List allUsersMapInList = from(allJson).get("data");
-
         allUsersMapInList.forEach(a -> {
             try {
                 userEntityList.add(gson.fromJson(objectMapper.writeValueAsString(a), User.class));
