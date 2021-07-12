@@ -27,8 +27,14 @@ public class DataFixture {
         options.addArguments("--window-size=1920,1200", "--no-sandbox");
         options.setHeadless(true);
         property = new Properties();
+        String pathToThePropertyFile;
         try {
-            FileInputStream fis = new FileInputStream("src/main/resources/config.properties");
+            if(System.getProperty("os.name").equals("Linux")) {
+                pathToThePropertyFile = "src/main/resources/config.properties";
+            } else {
+                pathToThePropertyFile = "src\\main\\resources\\config.properties";
+            }
+            FileInputStream fis = new FileInputStream(pathToThePropertyFile);
             property.load(fis);
         } catch (IOException e) {
             System.err.println("Property file don't found!");

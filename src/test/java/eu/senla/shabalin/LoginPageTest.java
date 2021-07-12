@@ -63,7 +63,13 @@ public class LoginPageTest extends DataFixture {
     @Attachment(value = "Вложение")
     private byte[] getExpectedParametersOnTxt(String pageUrl, String alertMessage) {
         List<String> list = Arrays.asList(pageUrl, alertMessage);
-        Path file = Paths.get("src/main/resources/testreportdata/"+LocalDateTime.now());
+        String fileDirectory;
+        if(System.getProperty("os.name").equals("Linux")) {
+            fileDirectory = "src/main/resources/testreportdata/";
+        } else {
+            fileDirectory = "src\\main\\resources\\testreportdata\\";
+        }
+        Path file = Paths.get(fileDirectory + LocalDateTime.now());
         try {
             Files.write(file, list, StandardCharsets.UTF_8);
             return Files.readAllBytes(file);
