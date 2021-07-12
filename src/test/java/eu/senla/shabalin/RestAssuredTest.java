@@ -2,10 +2,11 @@ package eu.senla.shabalin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import io.restassured.response.Response;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,29 +15,29 @@ import static io.restassured.path.json.JsonPath.from;
 
 public class RestAssuredTest {
     ObjectMapper objectMapper = new ObjectMapper();
+    Gson gson = new Gson();
 
     @Test
     public void getUserListTest() {
-    List<User> userEntityList = new ArrayList<>();
-    List<String> userJsonList = new ArrayList<>();
-    Response response = given()
-            .when()
-            .get("https://reqres.in/api/users?page=2")
-            .then()
-            .statusCode(200)
-            .extract().response();
-        response.getBody().print();
-        userJsonList = response.body().;
+        List<User> userEntityList = new ArrayList<>();
+        Response response = given()
+                .when()
+                .get("https://reqres.in/api/users?page=2")
+                .then()
+                .statusCode(200)
+                .extract().response();
 
-        userJsonList.forEach(a -> {
+        ResponseData data = response.getBody().as(ResponseData.class);
+        String allJson = response.body().asString();
+        List allUsersMapInList = from(allJson).get("data");
+
+        allUsersMapInList.forEach(a -> {
             try {
-                userEntityList.add(objectMapper.readValue(a, User.class));
+                userEntityList.add(gson.fromJson(objectMapper.writeValueAsString(a), User.class));
             } catch (JsonProcessingException e) {
-                System.err.println("Не удалось преобразовать json в объект.");
+                e.printStackTrace();
             }
         });
-
-//    System.out.println(response.body().asString());
-
-}
+        userEntityList.forEach(a -> System.out.println(a.getId()));
+    }
 }

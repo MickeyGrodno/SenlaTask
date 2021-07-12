@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class User {
-    private Long id;
-    private String eMail;
+    private Integer id;
+    private String email;
     private String firstName;
     private String lastName;
     private String avatar;
