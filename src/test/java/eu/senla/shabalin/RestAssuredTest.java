@@ -1,9 +1,12 @@
 package eu.senla.shabalin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.restassured.response.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
@@ -18,7 +21,7 @@ public class RestAssuredTest {
     Gson gson = new Gson();
 
     @Test
-    public void getUserListTest() {
+    public void getUserListTest() throws JsonProcessingException {
         List<User> userEntityList = new ArrayList<>();
         Response response = given()
                 .when()
@@ -27,8 +30,14 @@ public class RestAssuredTest {
                 .statusCode(200)
                 .extract().response();
 
-        ResponseData data = response.getBody().as(ResponseData.class);
         String allJson = response.body().asString();
+        JSONObject jsonObject = new JSONObject(allJson);
+        JSONArray data = jsonObject.getJSONArray("data");
+        List<User> plannedMaintenanceRequest = objectMapper
+                .readValue(data.toString(), objectMapper.getTypeFactory()
+                        .constructCollectionType(List.class, User.class));
+
+
         List allUsersMapInList = from(allJson).get("data");
 
         allUsersMapInList.forEach(a -> {
