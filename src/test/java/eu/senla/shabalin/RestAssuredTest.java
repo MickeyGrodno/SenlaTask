@@ -30,23 +30,27 @@ public class RestAssuredTest {
                 .statusCode(200)
                 .extract().response();
 
+        List<User> userList = Parser.parseJsonFromResponseToUserList(response);
+
+
+
         // Способ №1
-        String allJson = response.body().asString();
-        JSONObject jsonObject = new JSONObject(allJson);
-        JSONArray data = jsonObject.getJSONArray("data");
-        List<User> plannedMaintenanceRequest = objectMapper
-                .readValue(data.toString(), objectMapper.getTypeFactory()
-                        .constructCollectionType(List.class, User.class));
+//        String allJson = response.body().asString();
+//        JSONObject jsonObject = new JSONObject(allJson);
+//        JSONArray data = jsonObject.getJSONArray("data");
+//        List<User> plannedMaintenanceRequest = objectMapper
+//                .readValue(data.toString(), objectMapper.getTypeFactory()
+//                        .constructCollectionType(List.class, User.class));
 
         // Способ №2
-        List allUsersMapInList = from(allJson).get("data");
-        allUsersMapInList.forEach(a -> {
-            try {
-                userEntityList.add(gson.fromJson(objectMapper.writeValueAsString(a), User.class));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        });
-        userEntityList.forEach(a -> System.out.println(a.getId()));
+//        List allUsersMapInList = from(allJson).get("data");
+//        allUsersMapInList.forEach(a -> {
+//            try {
+//                userEntityList.add(gson.fromJson(objectMapper.writeValueAsString(a), User.class));
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        userEntityList.forEach(a -> System.out.println(a.getId()));
     }
 }
