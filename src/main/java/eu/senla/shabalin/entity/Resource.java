@@ -1,4 +1,4 @@
-package eu.senla.shabalin;
+package eu.senla.shabalin.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

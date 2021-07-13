@@ -1,4 +1,4 @@
-package eu.senla.shabalin;
+package eu.senla.shabalin.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

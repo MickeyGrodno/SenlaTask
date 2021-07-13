@@ -1,6 +1,9 @@
 package eu.senla.shabalin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.senla.shabalin.entity.Resource;
+import eu.senla.shabalin.entity.User;
+import eu.senla.shabalin.entity.Worker;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
