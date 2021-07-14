@@ -1,7 +1,11 @@
 package eu.senla.shabalin;
 
+import eu.senla.shabalin.enums.Column;
+import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.pageobjects.ComputerDatabasePage;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,11 +14,15 @@ import java.util.List;
 
 public class ComputerDatabaseTest {
     private ComputerDatabasePage page = new ComputerDatabasePage();
-    SoftAssertions assertions = new SoftAssertions();
+    private SoftAssertions assertions = new SoftAssertions();
+
+    @BeforeEach
+    public void beforeTest() {
+        page.openFirstPage();
+    }
 
     @Test
     public void computerNameSortByAscTest() {
-        page.openFirstPage();
         page.sortAllBy(Column.NAME, SortBy.ASC);
         List<String> firstPageList = page.getAllComputerNameInString(Column.NAME);
 
@@ -38,7 +46,6 @@ public class ComputerDatabaseTest {
     }
         @Test
         public void computerNameSortByDescTest() {
-            page.openFirstPage();
             page.sortAllBy(Column.NAME, SortBy.DESC);
             List<String> firstPageList = page.getAllComputerNameInString(Column.NAME);
 
@@ -65,7 +72,6 @@ public class ComputerDatabaseTest {
 
     @Test
     public void computerCompanySortByAscTest() {
-        page.openFirstPage();
         page.sortAllBy(Column.COMPANY, SortBy.ASC);
         List<String> firstPageList = page.getAllComputerNameInString(Column.COMPANY);
 
@@ -90,7 +96,6 @@ public class ComputerDatabaseTest {
 
     @Test
     public void computerCompanySortByDescTest() {
-        page.openFirstPage();
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
         List<String> firstPageList = page.getAllComputerNameInString(Column.COMPANY);
 
@@ -113,5 +118,10 @@ public class ComputerDatabaseTest {
                 .as("Равенство списка предпоследней страницы и отсортированного вручную")
                 .isEqualTo(true);
         assertions.assertAll();
+    }
+
+    @Test
+    public void checkTenRowsInPage() {
+        Assertions.assertEquals(10, page.getAllRowsFromPage().size());
     }
     }
