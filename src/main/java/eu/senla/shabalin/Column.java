@@ -1,5 +1,5 @@
 package eu.senla.shabalin;
 
-public enum SortedColumn {
+public enum Column {
     NAME, COMPANY
 }
