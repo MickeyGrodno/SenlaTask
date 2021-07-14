@@ -1,32 +1,47 @@
 package eu.senla.shabalin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.response.Response;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import eu.senla.shabalin.entity.Computer;
+import org.checkerframework.checker.units.qual.C;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Mapper {
-    private static ObjectMapper objectMapper = new ObjectMapper();;
-    public static List<?> mapJsonFromResponseToDataList(Response response, Class<?> clazz) throws JsonProcessingException {
-        String allJson = response.body().asString();
-        JSONObject jsonObject = new JSONObject(allJson);
-        JSONArray data = jsonObject.getJSONArray("data");
-        List list = objectMapper
-                .readValue(data.toString(), objectMapper.getTypeFactory()
-                        .constructCollectionType(List.class, clazz));
-        return list;
+    private Date dateParser(String dateString) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
+        if(!dateString.equals("-")) {
+            return format.parse(dateString);
+        } else {
+            return null;
+        }
     }
 
-    public static Object mapJsonFromResponseToDataObject(Response response, Class<?> clazz) throws JsonProcessingException {
-        String allJson = response.body().asString();
-        JSONObject jsonObject = new JSONObject(allJson);
-        if(jsonObject.has("data")){
-            return objectMapper.readValue(jsonObject.getJSONObject("data").toString(), clazz);
-        } else {
-            return objectMapper.readValue(jsonObject.toString(), clazz);
+    private Computer mapComputerElementToEntity(SelenideElement element) {
+        ElementsCollection allRows = element.$$("td");
+        try {
+            return new Computer(
+                    allRows.get(0).getText(),
+                    dateParser(allRows.get(1).getText()),
+                    dateParser(allRows.get(2).getText()),
+                    allRows.get(3).getText());
         }
+        catch (ParseException e) {
+            System.err.println("Не удалось преобразовать элемент в объект");
+        }
+        return null;
+    }
+
+
+
+    public List<Computer> mapComputerElementListToEntityList(ElementsCollection elementsCollection) {
+        List<Computer> computerList = new ArrayList<>();
+        elementsCollection.forEach(a -> computerList.add(mapComputerElementToEntity(a)));
+        return computerList;
+
     }
 }
