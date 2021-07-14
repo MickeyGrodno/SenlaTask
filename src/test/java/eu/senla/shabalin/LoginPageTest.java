@@ -1,6 +1,5 @@
 package eu.senla.shabalin;
 
-import eu.senla.shabalin.DataFixture;
 import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
 import io.qameta.allure.Attachment;
@@ -79,11 +78,9 @@ public class LoginPageTest extends DataFixture {
         return null;
     }
 
-    @BeforeEach
-    public void beforeTest() {
-        driver = new ChromeDriver(options);
-        driver.get(loginPageUrl);
-    }
+
+
+
 
     @Test
     public void loginWithIncorrectLoginAndIncorrectPassword() {
