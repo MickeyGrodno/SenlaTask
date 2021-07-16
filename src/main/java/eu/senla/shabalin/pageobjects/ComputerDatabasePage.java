@@ -25,7 +25,7 @@ public class ComputerDatabasePage {
         return rowCollection;
     }
 
-    public List<String> getAllComputerNameInString(Column column) {
+    public List<String> getComputerColumnInString(Column column) {
         if(column == Column.NAME){
             return computerNameElements.texts();
         } else {

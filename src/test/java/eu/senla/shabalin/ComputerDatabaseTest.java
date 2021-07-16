@@ -28,11 +28,11 @@ public class ComputerDatabaseTest {
     @Test
     public void computerNameSortByAscTest() {
         page.sortAllBy(Column.NAME, SortBy.ASC);
-        List<String> firstPageList = page.getAllComputerNameInString(Column.NAME);
+        List<String> firstPageList = page.getComputerColumnInString(Column.NAME);
 
         page.openPenultimatePage();
         page.sortAllBy(Column.NAME, SortBy.ASC);
-        List<String> penultimatePageList = page.getAllComputerNameInString(Column.NAME);
+        List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
 
         List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
@@ -43,11 +43,11 @@ public class ComputerDatabaseTest {
         @Test
         public void computerNameSortByDescTest() {
             page.sortAllBy(Column.NAME, SortBy.DESC);
-            List<String> firstPageList = page.getAllComputerNameInString(Column.NAME);
+            List<String> firstPageList = page.getComputerColumnInString(Column.NAME);
 
             page.openPenultimatePage();
             page.sortAllBy(Column.NAME, SortBy.DESC);
-            List<String> penultimatePageList = page.getAllComputerNameInString(Column.NAME);
+            List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
 
             List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
                     new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
@@ -59,11 +59,11 @@ public class ComputerDatabaseTest {
     @Test
     public void computerCompanySortByAscTest() {
         page.sortAllBy(Column.COMPANY, SortBy.ASC);
-        List<String> firstPageList = page.getAllComputerNameInString(Column.COMPANY);
+        List<String> firstPageList = page.getComputerColumnInString(Column.COMPANY);
 
         page.openPenultimatePage();
         page.sortAllBy(Column.COMPANY, SortBy.ASC);
-        List<String> penultimatePageList = page.getAllComputerNameInString(Column.COMPANY);
+        List<String> penultimatePageList = page.getComputerColumnInString(Column.COMPANY);
 
         List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
@@ -75,11 +75,11 @@ public class ComputerDatabaseTest {
     @Test
     public void computerCompanySortByDescTest() {
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
-        List<String> firstPageList = page.getAllComputerNameInString(Column.COMPANY);
+        List<String> firstPageList = page.getComputerColumnInString(Column.COMPANY);
 
         page.openPenultimatePage();
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
-        List<String> penultimatePageList = page.getAllComputerNameInString(Column.COMPANY);
+        List<String> penultimatePageList = page.getComputerColumnInString(Column.COMPANY);
 
         List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
