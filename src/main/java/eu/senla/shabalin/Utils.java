@@ -12,6 +12,12 @@ import java.util.List;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class Utils {
+
+    private static void headRowPrinter() {
+        $$("thead>tr>th").texts().forEach(text -> System.out.print(text+" | "));
+        System.out.println();
+    }
+
     public static List<List<String>> collectionSorter(SortBy sortBy, List<String> list1, List<String> list2) {
         if (sortBy == SortBy.ASC) {
             Collections.sort(list1);
@@ -33,11 +39,6 @@ public class Utils {
                 .as("Равенство списка предпоследней страницы и отсортированного вручную")
                 .isEqualTo(true);
         assertions.assertAll();
-    }
-
-    private static void headRowPrinter() {
-        $$("thead>tr>th").texts().forEach(text -> System.out.print(text+" | "));
-        System.out.println();
     }
 
     public static void rowsPrinter(ElementsCollection allRows) {
