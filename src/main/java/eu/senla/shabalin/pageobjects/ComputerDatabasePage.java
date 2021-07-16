@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.enums.Column;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -34,16 +33,14 @@ public class ComputerDatabasePage {
         }
     }
 
-    public ComputerDatabasePage openFirstPage() {
+    public void openFirstPage() {
         open(startPageUrl);
-        return this;
     }
 
-    public ComputerDatabasePage openPenultimatePage() {
+    public void openPenultimatePage() {
         String[] text = displayAllRowsCount.getText().split(" ");
-        Integer penultimatePage =(Integer.valueOf(text[text.length-1])/10)-1;
+        int penultimatePage =(Integer.parseInt(text[text.length-1])/10)-1;
         open(url().replaceFirst( "p=[0-9]", "p="+penultimatePage));
-        return this;
     }
 
     public void sortAllBy(Column sortedColumn, SortBy sortBy) {

@@ -85,7 +85,7 @@ public class ComputerDatabaseTest {
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
         Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
-                penultimatePageList, sortedLists.get(1));;
+                penultimatePageList, sortedLists.get(1));
     }
 
     @Test
