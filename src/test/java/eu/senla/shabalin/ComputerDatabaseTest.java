@@ -3,22 +3,26 @@ package eu.senla.shabalin;
 import eu.senla.shabalin.enums.Column;
 import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.pageobjects.ComputerDatabasePage;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class ComputerDatabaseTest {
     private ComputerDatabasePage page = new ComputerDatabasePage();
-    private SoftAssertions assertions = new SoftAssertions();
 
     @BeforeEach
     public void beforeTest() {
         page.openFirstPage();
+    }
+
+    @Test
+    public void printAllRowsTest() {
+        Utils.rowsPrinter(page.getAllRowsFromPage());
     }
 
     @Test
@@ -30,19 +34,11 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.NAME, SortBy.ASC);
         List<String> penultimatePageList = page.getAllComputerNameInString(Column.NAME);
 
-        List<String> sortedFirstPageList = new ArrayList<>(firstPageList);
-        List<String> sortedPenultimatePageList = new ArrayList<>(penultimatePageList);
+        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
+                new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Collections.sort(sortedFirstPageList);
-        Collections.sort(sortedPenultimatePageList);
-
-        assertions.assertThat(firstPageList.equals(sortedFirstPageList))
-                .as("Равенство списка первой страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertThat(penultimatePageList.equals(sortedPenultimatePageList))
-                .as("Равенство списка предпоследней страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertAll();
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
+                penultimatePageList, sortedLists.get(1));
     }
         @Test
         public void computerNameSortByDescTest() {
@@ -53,21 +49,11 @@ public class ComputerDatabaseTest {
             page.sortAllBy(Column.NAME, SortBy.DESC);
             List<String> penultimatePageList = page.getAllComputerNameInString(Column.NAME);
 
-            List<String> sortedFirstPageList = new ArrayList<>(firstPageList);
-            List<String> sortedPenultimatePageList = new ArrayList<>(penultimatePageList);
+            List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
+                    new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-            Collections.sort(sortedFirstPageList);
-            Collections.reverse(sortedFirstPageList);
-            Collections.sort(sortedPenultimatePageList);
-            Collections.reverse(sortedPenultimatePageList);
-
-            assertions.assertThat(firstPageList.equals(sortedFirstPageList))
-                    .as("Равенство списка первой страницы и отсортированного вручную")
-                    .isEqualTo(true);
-            assertions.assertThat(penultimatePageList.equals(sortedPenultimatePageList))
-                    .as("Равенство списка предпоследней страницы и отсортированного вручную")
-                    .isEqualTo(true);
-            assertions.assertAll();
+            Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
+                    penultimatePageList, sortedLists.get(1));
         }
 
     @Test
@@ -79,19 +65,11 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.COMPANY, SortBy.ASC);
         List<String> penultimatePageList = page.getAllComputerNameInString(Column.COMPANY);
 
-        List<String> sortedFirstPageList = new ArrayList<>(firstPageList);
-        List<String> sortedPenultimatePageList = new ArrayList<>(penultimatePageList);
+        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
+                new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Collections.sort(sortedFirstPageList);
-        Collections.sort(sortedPenultimatePageList);
-
-        assertions.assertThat(firstPageList.equals(sortedFirstPageList))
-                .as("Равенство списка первой страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertThat(penultimatePageList.equals(sortedPenultimatePageList))
-                .as("Равенство списка предпоследней страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertAll();
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
+                penultimatePageList, sortedLists.get(1));
     }
 
     @Test
@@ -103,25 +81,23 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
         List<String> penultimatePageList = page.getAllComputerNameInString(Column.COMPANY);
 
-        List<String> sortedFirstPageList = new ArrayList<>(firstPageList);
-        List<String> sortedPenultimatePageList = new ArrayList<>(penultimatePageList);
+        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
+                new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Collections.sort(sortedFirstPageList);
-        Collections.reverse(sortedFirstPageList);
-        Collections.sort(sortedPenultimatePageList);
-        Collections.reverse(sortedPenultimatePageList);
-
-        assertions.assertThat(firstPageList.equals(sortedFirstPageList))
-                .as("Равенство списка первой страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertThat(penultimatePageList.equals(sortedPenultimatePageList))
-                .as("Равенство списка предпоследней страницы и отсортированного вручную")
-                .isEqualTo(true);
-        assertions.assertAll();
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
+                penultimatePageList, sortedLists.get(1));;
     }
 
     @Test
-    public void checkTenRowsInPage() {
+    public void checkTenRowsInPagePositiveTest() {
         Assertions.assertEquals(10, page.getAllRowsFromPage().size());
     }
+
+    @Test
+    public void checkTenRowsInPageNegativeTest() {
+        int sizeBeforeDeleteRow = page.getAllRowsFromPage().size();
+        executeJavaScript("return document.querySelectorAll('tbody>tr')[0].remove();");
+        int sizeAfterDeleteRow = page.getAllRowsFromPage().size();
+        Assertions.assertEquals(sizeBeforeDeleteRow, sizeAfterDeleteRow);
     }
+}

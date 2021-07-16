@@ -12,6 +12,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
 public class ComputerDatabasePage {
+    private String startPageUrl = "https://computer-database.gatling.io/computers";
     private String headerSortUp = "headerSortUp";
     private String headerSortDown = "headerSortDown";
     private SelenideElement headComputerName = $("th.col-name");
@@ -26,30 +27,15 @@ public class ComputerDatabasePage {
     }
 
     public List<String> getAllComputerNameInString(Column column) {
-        List<String> computerNameList = new ArrayList<>();
-        ElementsCollection element;
         if(column == Column.NAME){
-            element = computerNameElements;
+            return computerNameElements.texts();
         } else {
-            element = computerCompanyElements;
+            return computerCompanyElements.texts();
         }
-        element.forEach(a -> computerNameList.add(a.getText()));
-        return computerNameList;
-    }
-
-    public ElementsCollection getAllComputerNameInElement() {
-        return computerNameElements;
     }
 
     public ComputerDatabasePage openFirstPage() {
-        open("https://computer-database.gatling.io/computers");
-        return this;
-    }
-
-    public ComputerDatabasePage openPageWithAllRows() {
-        String[] text = displayAllRowsCount.getText().split(" ");
-        String url = "https://computer-database.gatling.io/computers?p=0&n="+text[text.length-1];
-        open(url);
+        open(startPageUrl);
         return this;
     }
 
