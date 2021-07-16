@@ -47,16 +47,10 @@ public class ComputerDatabasePage {
         String sorter;
         SelenideElement column;
 
-        if(sortedColumn == Column.NAME) {
-            column = headComputerName;
-        } else {
-            column = headComputerCompany;
-        }
-        if(sortBy == SortBy.ASC) {
-            sorter = headerSortUp;
-        } else {
-            sorter = headerSortDown;
-        }
+        if(sortedColumn == Column.NAME) { column = headComputerName; }
+        else { column = headComputerCompany; }
+        if(sortBy == SortBy.ASC) { sorter = headerSortUp; }
+        else { sorter = headerSortDown; }
         while(!column.getAttribute("class").contains(sorter)) {
             column.$("a").click();
         }
