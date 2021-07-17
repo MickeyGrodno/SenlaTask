@@ -3,6 +3,7 @@ package eu.senla.shabalin;
 import eu.senla.shabalin.enums.Column;
 import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.pageobjects.ComputerDatabasePage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,11 +35,11 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.NAME, SortBy.ASC);
         List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
 
-        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
+        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.ASC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
-                penultimatePageList, sortedLists.get(1));
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
+                penultimatePageList, sortedPairList.getRight());
     }
         @Test
         public void computerNameSortByDescTest() {
@@ -49,11 +50,11 @@ public class ComputerDatabaseTest {
             page.sortAllBy(Column.NAME, SortBy.DESC);
             List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
 
-            List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
+            Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.DESC,
                     new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-            Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
-                    penultimatePageList, sortedLists.get(1));
+            Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
+                    penultimatePageList, sortedPairList.getRight());
         }
 
     @Test
@@ -65,11 +66,11 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.COMPANY, SortBy.ASC);
         List<String> penultimatePageList = page.getComputerColumnInString(Column.COMPANY);
 
-        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.ASC,
+        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.ASC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
-                penultimatePageList, sortedLists.get(1));
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
+                penultimatePageList, sortedPairList.getRight());
     }
 
     @Test
@@ -81,11 +82,11 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
         List<String> penultimatePageList = page.getComputerColumnInString(Column.COMPANY);
 
-        List<List<String>> sortedLists = Utils.collectionSorter(SortBy.DESC,
+        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.ASC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
-        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedLists.get(0),
-                penultimatePageList, sortedLists.get(1));
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
+                penultimatePageList, sortedPairList.getRight());
     }
 
     @Test

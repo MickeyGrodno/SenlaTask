@@ -2,6 +2,7 @@ package eu.senla.shabalin;
 
 import com.codeborne.selenide.ElementsCollection;
 import eu.senla.shabalin.enums.SortBy;
+import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.SoftAssertions;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Utils {
         System.out.println();
     }
 
-    public static List<List<String>> collectionSorter(SortBy sortBy, List<String> list1, List<String> list2) {
+    public static Pair<List<String>, List<String>> collectionSorter(SortBy sortBy, List<String> list1, List<String> list2) {
         if (sortBy == SortBy.ASC) {
             Collections.sort(list1);
             Collections.sort(list2);
@@ -26,7 +27,7 @@ public class Utils {
             list1.sort(Collections.reverseOrder());
             list2.sort(Collections.reverseOrder());
         }
-        return new ArrayList<>(Arrays.asList(list1, list2));
+        return Pair.of(list1, list2);
     }
 
     public static void beforeAndAfterTwoCollectionAssertion(List<String> firstBefore, List<String> firstAfter,
