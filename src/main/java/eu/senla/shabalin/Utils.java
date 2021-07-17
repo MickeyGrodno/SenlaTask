@@ -5,8 +5,6 @@ import eu.senla.shabalin.enums.SortBy;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.SoftAssertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,12 +13,12 @@ import static com.codeborne.selenide.Selenide.$$;
 public class Utils {
 
     private static void headRowPrinter() {
-        $$("thead>tr>th").texts().forEach(text -> System.out.print(text+" | "));
+        $$("thead>tr>th").texts().forEach(text -> System.out.print(text + " | "));
         System.out.println();
     }
 
     public static Pair<List<String>, List<String>> collectionSorter(SortBy sortBy, List<String> list1, List<String> list2) {
-        if (sortBy == SortBy.ASC) {
+        if (sortBy.equals(SortBy.ASC)) {
             Collections.sort(list1);
             Collections.sort(list2);
         } else {
@@ -46,7 +44,7 @@ public class Utils {
         headRowPrinter();
         allRows.forEach(element ->
         {
-            element.$$("td").texts().forEach(text -> System.out.print(text+" | "));
+            element.$$("td").texts().forEach(text -> System.out.print(text + " | "));
             System.out.println();
         });
     }

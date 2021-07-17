@@ -2,8 +2,8 @@ package eu.senla.shabalin.pageobjects;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.enums.Column;
+import eu.senla.shabalin.enums.SortBy;
 
 import java.util.List;
 import java.util.Objects;

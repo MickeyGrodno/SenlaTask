@@ -41,21 +41,22 @@ public class ComputerDatabaseTest {
         Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
                 penultimatePageList, sortedPairList.getRight());
     }
-        @Test
-        public void computerNameSortByDescTest() {
-            page.sortAllBy(Column.NAME, SortBy.DESC);
-            List<String> firstPageList = page.getComputerColumnInString(Column.NAME);
 
-            page.openPenultimatePage();
-            page.sortAllBy(Column.NAME, SortBy.DESC);
-            List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
+    @Test
+    public void computerNameSortByDescTest() {
+        page.sortAllBy(Column.NAME, SortBy.DESC);
+        List<String> firstPageList = page.getComputerColumnInString(Column.NAME);
 
-            Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.DESC,
-                    new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
+        page.openPenultimatePage();
+        page.sortAllBy(Column.NAME, SortBy.DESC);
+        List<String> penultimatePageList = page.getComputerColumnInString(Column.NAME);
 
-            Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
-                    penultimatePageList, sortedPairList.getRight());
-        }
+        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.DESC,
+                new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
+
+        Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
+                penultimatePageList, sortedPairList.getRight());
+    }
 
     @Test
     public void computerCompanySortByAscTest() {
