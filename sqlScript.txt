@@ -1,0 +1,67 @@
+create table "user"
+(
+    id         bigserial not null
+        constraint user_pk
+            primary key,
+    first_name varchar   not null,
+    last_name  varchar   not null,
+    age        bigint    not null
+);
+
+alter table "user"
+    owner to postgres;
+
+create unique index user_id_uindex
+    on "user" (id);
+
+create table "order"
+(
+    id         bigserial not null
+        constraint order_pk
+            primary key,
+    user_id    bigint    not null
+        constraint order_user_id_fk
+            references "user",
+    order_date date
+);
+
+alter table "order"
+    owner to postgres;
+
+create unique index order_id_uindex
+    on "order" (id);
+
+create table product
+(
+    id           bigserial not null
+        constraint product_pk
+            primary key,
+    product_name varchar   not null,
+    cost         integer   not null
+);
+
+alter table product
+    owner to postgres;
+
+create unique index product_id_uindex
+    on product (id);
+
+create table order_product
+(
+    id         bigserial not null
+        constraint order_product_pk
+            primary key,
+    order_id   bigint    not null
+        constraint order_product_order_id_fk
+            references "order",
+    product_id bigint    not null
+        constraint order_product_product_id_fk
+            references product
+);
+
+alter table order_product
+    owner to postgres;
+
+create unique index order_product_id_uindex
+    on order_product (id);
+
