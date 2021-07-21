@@ -1,21 +1,19 @@
 package eu.senla.shabalin;
 
-import eu.senla.shabalin.dao.OrderDaoImpl;
-import eu.senla.shabalin.entity.Orders;
+import eu.senla.shabalin.dao.CustomerDaoImpl;
+import eu.senla.shabalin.dao.interfaces.CustomerDao;
+import eu.senla.shabalin.entity.Customer;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.time.LocalDate;
-
-import static eu.senla.shabalin.DataBaseConnector.getConnection;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException, NoSuchFieldException {
 
-        Orders orders = new Orders();
-        orders.setId(1);
-        OrderDaoImpl dao = new OrderDaoImpl();
-        dao.delete(orders);
+        CustomerDao customerDao = new CustomerDaoImpl();
+        List<Customer> list =  customerDao.findAll();
+        list.size();
 //
 //
 //        CustomerDaoImpl customerDao = new CustomerDaoImpl();

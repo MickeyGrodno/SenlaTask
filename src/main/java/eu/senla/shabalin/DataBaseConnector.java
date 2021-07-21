@@ -31,6 +31,7 @@ public class DataBaseConnector {
             password = property.getProperty("password");
 
             Class.forName("org.postgresql.Driver");
+
             try {
                 connection = DriverManager.getConnection(url, user, password);
             } catch (SQLException e) {
@@ -40,9 +41,4 @@ public class DataBaseConnector {
         }
         return connection;
     }
-//    public static int postQuery(String query) throws SQLException {
-//        statement
-//        statement.getConnection().createStatement();
-//        statement.executeUpdate(query);
-//    }
 }

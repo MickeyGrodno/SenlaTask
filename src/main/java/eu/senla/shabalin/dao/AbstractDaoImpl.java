@@ -10,16 +10,15 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-public class AbstractDaoImpl<T, PK extends Serializable> implements AbstractDao<T, Long> {
-    private Class<T> type;
-    private Utils<T> utils = new Utils<T>();
+public class AbstractDaoImpl<T extends Serializable> implements AbstractDao<T> {
+    private final Class<T> type;
+    private final Utils<T> utils = new Utils<T>();
     public AbstractDaoImpl(Class<T> type) {
         this.type = type;
     }
 
     @Override
     public Long create(T newInstance) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
-
         return utils.insertEntityInDb(utils.entityToSqlInsertQuery(newInstance), newInstance);
     }
 
@@ -40,7 +39,7 @@ public class AbstractDaoImpl<T, PK extends Serializable> implements AbstractDao<
     }
 
     @Override
-    public List<T> findAll(Class clazz) {
-        return null;
+    public List<T> findAll() throws SQLException, ClassNotFoundException {
+        return utils.getAllEntityFromDb(type);
     }
 }

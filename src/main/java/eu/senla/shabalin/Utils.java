@@ -1,28 +1,20 @@
 package eu.senla.shabalin;
 
+import eu.senla.shabalin.utils.EntityConvertor;
+
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static eu.senla.shabalin.DataBaseConnector.getConnection;
 
 public class Utils<T> {
-    public String entityClassToShortClassNameBuilder(T entity) {
-        return entity.getClass().getSimpleName().toLowerCase();
-    }
-
-    public String fieldTypeNameToShotStringBuilder(Field field) {
-        String[] classNameArray = field.getGenericType().getTypeName().split("\\.");
-        if(classNameArray.length < 1) {
-            return classNameArray[0];
-        } else {
-            return classNameArray[classNameArray.length-1].toLowerCase();
-        }
-    }
 
     private PreparedStatement preparedStatementSetter(PreparedStatement statement, Field[] fields, T object) throws IllegalAccessException, SQLException, ParseException {
         for (int i = 1; i < fields.length; i++) {
@@ -33,7 +25,6 @@ public class Utils<T> {
                 if(fields[i].getGenericType().getTypeName().toLowerCase().contains("date")) {
                     String str = fields[i].get(object).toString();
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
                     statement.setDate(i, new Date((format.parse(fields[i].get(object).toString())).getTime()));
                 } else {
                     if(fields[i].getGenericType().getTypeName().toLowerCase().contains("long")) {
@@ -47,7 +38,12 @@ public class Utils<T> {
         return statement;
     }
 
-    public String entityFieldToDBColumnNameConvertor(String value) {
+    private String entityToSqlDeleteQuery(T object) {
+        String tableName = object.getClass().getSimpleName();
+        return "delete from "+tableName+" where id = ?";
+    }
+
+    private String entityFieldToDBColumnNameConvertor(String value) {
         return value.replaceAll("(?<=[A-Za-z0-9])[A-Z]", "_$0").toLowerCase();
     }
     public String entityToSqlInsertQuery(T entity) {
@@ -71,6 +67,29 @@ public class Utils<T> {
         return tableAndColumns.append(values).toString();
     }
 
+    public String entityToSqlUpdateQuery(T entity) {
+        String tableName = entity.getClass().getSimpleName().toLowerCase();
+        Field[] fields = entity.getClass().getDeclaredFields();
+        StringBuffer tableAndColumns = new StringBuffer();
+        tableAndColumns.append("update ").append(tableName).append(" set ");
+
+        for(int i = 1; i<fields.length; i++) {
+            if(fields.length-1==i) {
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName()))
+                        .append(" = ? where id = ?");
+            } else {
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(" = ?, ");
+            }
+        }
+        return tableAndColumns.toString();
+    }
+    public ResultSet entityToSqlReadQuery(Long id, String tableName) throws ClassNotFoundException, SQLException {
+        String sql = "select * from "+tableName+" where id = ?";
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        statement.setLong(1, id);
+        return statement.executeQuery();
+    }
+
     public long insertEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
         PreparedStatement statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         Field[] fields = object.getClass().getDeclaredFields();
@@ -91,22 +110,7 @@ public class Utils<T> {
         }
     }
 
-    public String entityToSqlUpdateQuery(T entity) {
-        String tableName = entity.getClass().getSimpleName().toLowerCase();
-        Field[] fields = entity.getClass().getDeclaredFields();
-        StringBuffer tableAndColumns = new StringBuffer();
-        tableAndColumns.append("update ").append(tableName).append(" set ");
 
-        for(int i = 1; i<fields.length; i++) {
-            if(fields.length-1==i) {
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName()))
-                        .append(" = ? where id = ?");
-            } else {
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(" = ?, ");
-            }
-        }
-        return tableAndColumns.toString();
-    }
 
     public void updateEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
         PreparedStatement statement = getConnection().prepareStatement(sql);
@@ -123,10 +127,7 @@ public class Utils<T> {
         }
     }
 
-    public String entityToSqlDeleteQuery(T object) {
-        String tableName = object.getClass().getSimpleName();
-        return "delete from "+tableName+" where id = ?";
-    }
+
     public void deleteEntityFromDb(T object) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, SQLException {
         Field idField = object.getClass().getDeclaredField("id");
         idField.setAccessible(true);
@@ -139,10 +140,15 @@ public class Utils<T> {
         }
     }
 
-    public ResultSet entityToSqlReadQuery(Long id, String tableName) throws ClassNotFoundException, SQLException {
-        String sql = "select * from "+tableName+" where id = ?";
-        PreparedStatement statement = getConnection().prepareStatement(sql);
-        statement.setLong(1, id);
-        return statement.executeQuery();
+    public List<T> getAllEntityFromDb(Class clazz) throws ClassNotFoundException, SQLException {
+        String name = clazz.getSimpleName();
+        String tableName = clazz.getSimpleName().toLowerCase();
+        PreparedStatement statement = getConnection().prepareStatement("select * from "+tableName);
+        ResultSet resultSet = statement.executeQuery();
+        List<T> entityList = new ArrayList<>();
+        while (!resultSet.isLast()) {
+            entityList.add((T) EntityConvertor.convertResultSetToEntity(resultSet, clazz));
+        }
+        return entityList;
     }
 }
