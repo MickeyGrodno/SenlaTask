@@ -1,18 +1,32 @@
 package eu.senla.shabalin;
 
-import eu.senla.shabalin.dao.ProductDaoImpl;
-import eu.senla.shabalin.entity.Product;
+import eu.senla.shabalin.dao.OrderDaoImpl;
+import eu.senla.shabalin.entity.Orders;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.time.LocalDate;
 
 import static eu.senla.shabalin.DataBaseConnector.getConnection;
 
 public class Main {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, IllegalAccessException {
-//        PreparedStatement statement = getConnection().prepareStatement("select * from product where id = 1");
-//        ResultSet resultSet = statement.executeQuery();
-        ProductDaoImpl productDao = new ProductDaoImpl();
-        productDao.read(2L);
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException, NoSuchFieldException {
+
+        Orders orders = new Orders();
+        orders.setId(1);
+        OrderDaoImpl dao = new OrderDaoImpl();
+        dao.delete(orders);
+//
+//
+//        CustomerDaoImpl customerDao = new CustomerDaoImpl();
+//        Customer customer = (Customer) customerDao.read(2L);
+//        System.out.println(customer.getId());
+//        System.out.println(customer.getFirstName());
+//        System.out.println(customer.getLastName());
+//        System.out.println(customer.getAge());
+//
+//        PreparedStatement statement = getConnection().prepareStatement("update orders set customer_id = 2, order_date = '' where id = 1");
+//        int resultSet = statement.executeUpdate();
 
 
 

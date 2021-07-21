@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class Customer implements Entity{
     private long id;
     private String firstName;

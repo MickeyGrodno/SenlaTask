@@ -1,10 +1,11 @@
 package eu.senla.shabalin;
 
 import java.lang.reflect.Field;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import static eu.senla.shabalin.DataBaseConnector.getConnection;
@@ -23,7 +24,30 @@ public class Utils<T> {
         }
     }
 
-    public String entityFieldToDBFieldConvertor(String value) {
+    private PreparedStatement preparedStatementSetter(PreparedStatement statement, Field[] fields, T object) throws IllegalAccessException, SQLException, ParseException {
+        for (int i = 1; i < fields.length; i++) {
+            fields[i].setAccessible(true);
+            if(fields[i].getGenericType().getTypeName().toLowerCase().contains("string")) {
+                statement.setString(i, fields[i].get(object).toString());
+            } else {
+                if(fields[i].getGenericType().getTypeName().toLowerCase().contains("date")) {
+                    String str = fields[i].get(object).toString();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                    statement.setDate(i, new Date((format.parse(fields[i].get(object).toString())).getTime()));
+                } else {
+                    if(fields[i].getGenericType().getTypeName().toLowerCase().contains("long")) {
+                        statement.setLong(i, Long.parseLong(fields[i].get(object).toString()));
+                    } else {
+                        statement.setInt(i, Integer.parseInt(fields[i].get(object).toString()));
+                    }
+                }
+            }
+        }
+        return statement;
+    }
+
+    public String entityFieldToDBColumnNameConvertor(String value) {
         return value.replaceAll("(?<=[A-Za-z0-9])[A-Z]", "_$0").toLowerCase();
     }
     public String entityToSqlInsertQuery(T entity) {
@@ -38,36 +62,20 @@ public class Utils<T> {
         for(int i = 1; i<fields.length; i++) {
             if(fields.length-1==i) {
                 values.append("?)");
-                tableAndColumns.append(entityFieldToDBFieldConvertor(fields[i].getName())).append(")");
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(")");
             } else {
                 values.append("?, ");
-                tableAndColumns.append(entityFieldToDBFieldConvertor(fields[i].getName())).append(", ");
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(", ");
             }
         }
         return tableAndColumns.append(values).toString();
     }
 
-    public long insertEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException {
+    public long insertEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
         PreparedStatement statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         Field[] fields = object.getClass().getDeclaredFields();
 
-        for (int i = 1; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            if(fields[i].getGenericType().getTypeName().toLowerCase().contains("string")) {
-                statement.setString(i, fields[i].get(object).toString());
-            } else {
-                if(fields[i].getGenericType().getTypeName().toLowerCase().contains("date")) {
-                    statement.setDate(i, java.sql.Date.valueOf(fields[i].get(object).toString()));
-                } else {
-                    if(fields[i].getGenericType().getTypeName().toLowerCase().contains("long")) {
-                        statement.setLong(i, Long.parseLong(fields[i].get(object).toString()));
-                    } else {
-                        statement.setInt(i, Integer.parseInt(fields[i].get(object).toString()));
-                    }
-                }
-            }
-        }
-        int affectedRows = statement.executeUpdate();
+        int affectedRows = preparedStatementSetter(statement, fields, object).executeUpdate();
 
         if (affectedRows == 0) {
             throw new SQLException("Creating user failed, no rows affected.");
@@ -83,12 +91,58 @@ public class Utils<T> {
         }
     }
 
-    public String entityToSqlReadQuery(Long id, String tableName) throws ClassNotFoundException, SQLException {
+    public String entityToSqlUpdateQuery(T entity) {
+        String tableName = entity.getClass().getSimpleName().toLowerCase();
+        Field[] fields = entity.getClass().getDeclaredFields();
+        StringBuffer tableAndColumns = new StringBuffer();
+        tableAndColumns.append("update ").append(tableName).append(" set ");
+
+        for(int i = 1; i<fields.length; i++) {
+            if(fields.length-1==i) {
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName()))
+                        .append(" = ? where id = ?");
+            } else {
+                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(" = ?, ");
+            }
+        }
+        return tableAndColumns.toString();
+    }
+
+    public void updateEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        Field[] fields = object.getClass().getDeclaredFields();
+        int fieldsLength = fields.length;
+
+        fields[0].setAccessible(true);
+        statement.setLong(fieldsLength, Long.parseLong(fields[0].get(object).toString()));
+
+        int affectedRows = preparedStatementSetter(statement, fields, object).executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Updating user failed, no rows affected.");
+        }
+    }
+
+    public String entityToSqlDeleteQuery(T object) {
+        String tableName = object.getClass().getSimpleName();
+        return "delete from "+tableName+" where id = ?";
+    }
+    public void deleteEntityFromDb(T object) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, SQLException {
+        Field idField = object.getClass().getDeclaredField("id");
+        idField.setAccessible(true);
+        long id = Long.parseLong(idField.get(object).toString());
+        PreparedStatement statement = getConnection().prepareStatement(entityToSqlDeleteQuery(object));
+        statement.setLong(1, id);
+        int affectedRows = statement.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Updating user failed, no rows affected.");
+        }
+    }
+
+    public ResultSet entityToSqlReadQuery(Long id, String tableName) throws ClassNotFoundException, SQLException {
         String sql = "select * from "+tableName+" where id = ?";
         PreparedStatement statement = getConnection().prepareStatement(sql);
         statement.setLong(1, id);
-        ResultSet resultSet = statement.executeQuery();
-        System.out.println();
-        return null;
+        return statement.executeQuery();
     }
 }
