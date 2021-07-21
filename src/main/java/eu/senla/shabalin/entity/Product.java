@@ -6,9 +6,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
-public class Product {
+public class Product implements Entity{
     private long id;
     private String productName;
     private long cost;
+
+    public Product(String productName, long cost) {
+        this.productName = productName;
+        this.cost = cost;
+    }
 }

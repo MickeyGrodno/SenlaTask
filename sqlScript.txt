@@ -1,4 +1,4 @@
-create table "user"
+create table "customer"
 (
     id         bigserial not null
         constraint user_pk
@@ -8,11 +8,11 @@ create table "user"
     age        bigint    not null
 );
 
-alter table "user"
+alter table "customer"
     owner to postgres;
 
 create unique index user_id_uindex
-    on "user" (id);
+    on "customer" (id);
 
 create table "order"
 (
@@ -21,7 +21,7 @@ create table "order"
             primary key,
     user_id    bigint    not null
         constraint order_user_id_fk
-            references "user",
+            references "customer",
     order_date date
 );
 

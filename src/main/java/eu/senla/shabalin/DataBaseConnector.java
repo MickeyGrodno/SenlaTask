@@ -2,10 +2,7 @@ package eu.senla.shabalin;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class DataBaseConnector {
@@ -14,7 +11,6 @@ public class DataBaseConnector {
     private static String url;
     private static String user;
     private static String password;
-    private static Statement statement;
 
     public static Connection getConnection() throws ClassNotFoundException {
         if (connection == null) {
@@ -44,8 +40,9 @@ public class DataBaseConnector {
         }
         return connection;
     }
-    public static int postQuery(String query) throws SQLException {
-        statement.getConnection().createStatement();
-        statement.executeUpdate(query);
-    }
+//    public static int postQuery(String query) throws SQLException {
+//        statement
+//        statement.getConnection().createStatement();
+//        statement.executeUpdate(query);
+//    }
 }
