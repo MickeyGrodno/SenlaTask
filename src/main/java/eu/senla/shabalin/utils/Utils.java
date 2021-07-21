@@ -1,4 +1,4 @@
-package eu.senla.shabalin;
+package eu.senla.shabalin.utils;
 
 import eu.senla.shabalin.utils.EntityConvertor;
 
@@ -19,7 +19,8 @@ public class Utils<T> {
     private PreparedStatement preparedStatementSetter(PreparedStatement statement, Field[] fields, T object) throws IllegalAccessException, SQLException, ParseException {
         for (int i = 1; i < fields.length; i++) {
             fields[i].setAccessible(true);
-            if(fields[i].getGenericType().getTypeName().toLowerCase().contains("string")) {
+            if(fields[i]
+                    .getGenericType().getTypeName().toLowerCase().contains("string")) {
                 statement.setString(i, fields[i].get(object).toString());
             } else {
                 if(fields[i].getGenericType().getTypeName().toLowerCase().contains("date")) {
@@ -141,7 +142,6 @@ public class Utils<T> {
     }
 
     public List<T> getAllEntityFromDb(Class clazz) throws ClassNotFoundException, SQLException {
-        String name = clazz.getSimpleName();
         String tableName = clazz.getSimpleName().toLowerCase();
         PreparedStatement statement = getConnection().prepareStatement("select * from "+tableName);
         ResultSet resultSet = statement.executeQuery();

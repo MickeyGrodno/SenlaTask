@@ -1,6 +1,6 @@
 package eu.senla.shabalin.dao;
 
-import eu.senla.shabalin.Utils;
+import eu.senla.shabalin.utils.Utils;
 import eu.senla.shabalin.dao.interfaces.AbstractDao;
 import eu.senla.shabalin.utils.EntityConvertor;
 
