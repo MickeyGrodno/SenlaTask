@@ -1,16 +1,11 @@
 package eu.senla.shabalin.utils;
 
-import eu.senla.shabalin.utils.EntityConvertor;
-
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static eu.senla.shabalin.DataBaseConnector.getConnection;
 
@@ -44,11 +39,11 @@ public class Utils<T> {
         return "delete from "+tableName+" where id = ?";
     }
 
-    private String entityFieldToDBColumnNameConvertor(String value) {
+    private String camelCaseToUnderScore(String value) {
         return value.replaceAll("(?<=[A-Za-z0-9])[A-Z]", "_$0").toLowerCase();
     }
     public String entityToSqlInsertQuery(T entity) {
-        String tableName = entity.getClass().getSimpleName();
+        String tableName = camelCaseToUnderScore(entity.getClass().getSimpleName());
         Field[] fields = entity.getClass().getDeclaredFields();
         StringBuffer tableAndColumns = new StringBuffer();
         tableAndColumns.append("insert into ");
@@ -59,10 +54,10 @@ public class Utils<T> {
         for(int i = 1; i<fields.length; i++) {
             if(fields.length-1==i) {
                 values.append("?)");
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(")");
+                tableAndColumns.append(camelCaseToUnderScore(fields[i].getName())).append(")");
             } else {
                 values.append("?, ");
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(", ");
+                tableAndColumns.append(camelCaseToUnderScore(fields[i].getName())).append(", ");
             }
         }
         return tableAndColumns.append(values).toString();
@@ -76,10 +71,10 @@ public class Utils<T> {
 
         for(int i = 1; i<fields.length; i++) {
             if(fields.length-1==i) {
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName()))
+                tableAndColumns.append(camelCaseToUnderScore(fields[i].getName()))
                         .append(" = ? where id = ?");
             } else {
-                tableAndColumns.append(entityFieldToDBColumnNameConvertor(fields[i].getName())).append(" = ?, ");
+                tableAndColumns.append(camelCaseToUnderScore(fields[i].getName())).append(" = ?, ");
             }
         }
         return tableAndColumns.toString();
@@ -111,8 +106,6 @@ public class Utils<T> {
         }
     }
 
-
-
     public void updateEntityInDb(String sql, T object) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
         PreparedStatement statement = getConnection().prepareStatement(sql);
         Field[] fields = object.getClass().getDeclaredFields();
@@ -127,7 +120,6 @@ public class Utils<T> {
             throw new SQLException("Updating user failed, no rows affected.");
         }
     }
-
 
     public void deleteEntityFromDb(T object) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, SQLException {
         Field idField = object.getClass().getDeclaredField("id");
@@ -150,5 +142,11 @@ public class Utils<T> {
             entityList.add((T) EntityConvertor.convertResultSetToEntity(resultSet, clazz));
         }
         return entityList;
+    }
+
+    public void clearAllTables() throws ClassNotFoundException, SQLException {
+        Statement statement = getConnection().createStatement();
+        statement.executeUpdate("TRUNCATE order_product, orders, product, customer" +
+                " RESTART IDENTITY;");
     }
 }

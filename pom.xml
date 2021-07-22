@@ -15,6 +15,7 @@
         <junit5>5.4.0</junit5>
         <assertj>3.20.2</assertj>
         <selenide>5.22.3</selenide>
+        <postgres>42.2.23</postgres>
     </properties>
 
     <dependencies>
@@ -39,11 +40,10 @@
             <artifactId>selenide</artifactId>
             <version>${selenide}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.23</version>
+            <version>${postgres}</version>
         </dependency>
 
 

@@ -1,9 +1,6 @@
 package eu.senla.shabalin.utils;
 
-import eu.senla.shabalin.entity.Customer;
-import eu.senla.shabalin.entity.Entity;
-import eu.senla.shabalin.entity.Orders;
-import eu.senla.shabalin.entity.Product;
+import eu.senla.shabalin.entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,10 +22,17 @@ public class EntityConvertor {
                             resultSet.getLong("user_id"),
                             LocalDate.parse((CharSequence) resultSet.getDate("order_date")));
                 } else {
-                    return new Product(
-                            resultSet.getLong("id"),
-                            resultSet.getString("product_name"),
-                            resultSet.getLong("cost"));
+                    if(clazz.getSimpleName().equals(Product.class.getSimpleName())) {
+                        return new Product(
+                                resultSet.getLong("id"),
+                                resultSet.getString("product_name"),
+                                resultSet.getLong("cost"));
+                    } else {
+                        return new OrderProduct(
+                                resultSet.getLong("id"),
+                                resultSet.getLong("order_id"),
+                                resultSet.getLong("product_id"));
+                    }
                 }
             }
         } else {

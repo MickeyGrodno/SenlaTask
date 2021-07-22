@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders implements Entity{
+public class Orders implements Entity, Serializable {
     private long id;
     private long customerId;
     private LocalDate orderDate;

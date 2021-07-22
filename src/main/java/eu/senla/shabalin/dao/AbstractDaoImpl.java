@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AbstractDaoImpl<T extends Serializable> implements AbstractDao<T> {
     private final Class<T> type;
-    private final Utils<T> utils = new Utils<T>();
+    private final Utils<T> utils = new Utils<>();
     public AbstractDaoImpl(Class<T> type) {
         this.type = type;
     }

@@ -17,9 +17,9 @@ public class DataBaseConnector {
             String pathToThePropertyFile;
             try {
                 if (System.getProperty("os.name").equals("Linux")) {
-                    pathToThePropertyFile = "src/main/resources/bd.properties";
+                    pathToThePropertyFile = "src/main/resources/db.properties";
                 } else {
-                    pathToThePropertyFile = "src\\main\\resources\\bd.properties";
+                    pathToThePropertyFile = "src\\main\\resources\\db.properties";
                 }
                 property = new Properties();
                 property.load(new FileInputStream(pathToThePropertyFile));
