@@ -9,7 +9,6 @@ import eu.senla.shabalin.dao.interfaces.OrderProductDao;
 import eu.senla.shabalin.dao.interfaces.OrdersDao;
 import eu.senla.shabalin.dao.interfaces.ProductDao;
 import eu.senla.shabalin.entity.Customer;
-import eu.senla.shabalin.entity.OrderProduct;
 import eu.senla.shabalin.entity.Orders;
 import eu.senla.shabalin.entity.Product;
 import eu.senla.shabalin.utils.Utils;
