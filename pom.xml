@@ -16,6 +16,7 @@
         <assertj>3.20.2</assertj>
         <selenide>5.22.3</selenide>
         <postgres>42.2.23</postgres>
+        <hibernate>5.5.4.Final</hibernate>
     </properties>
 
     <dependencies>
@@ -44,6 +45,21 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgres}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>3.2.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
         </dependency>
     </dependencies>
 

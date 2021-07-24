@@ -1,45 +1,52 @@
 package eu.senla.shabalin.dao;
 
-import eu.senla.shabalin.utils.Utils;
 import eu.senla.shabalin.dao.interfaces.AbstractDao;
-import eu.senla.shabalin.utils.EntityConvertor;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
-public class AbstractDaoImpl<T extends Serializable> implements AbstractDao<T> {
-    private final Class<T> type;
-    private final Utils<T> utils = new Utils<>();
-    public AbstractDaoImpl(Class<T> type) {
+public class AbstractDaoImpl<T, PK extends Serializable> implements AbstractDao<T, PK> {
+
+    private final Session session;
+    private Class<T> type;
+    private Transaction transaction;
+
+    public AbstractDaoImpl(Session session, Class<T> type) {
+        this.session = session;
         this.type = type;
     }
 
-    @Override
-    public Long create(T newInstance) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException {
-        return utils.insertEntityInDb(utils.entityToSqlInsertQuery(newInstance), newInstance);
+    public Session getSession() {
+        return session;
     }
 
-    @Override
-    public T read(Long id) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = utils.entityToSqlReadQuery(id, type.getSimpleName().toLowerCase());
-        return (T) EntityConvertor.convertResultSetToEntity(resultSet, type);
+    public PK create(T o) {
+        Transaction transaction = session.beginTransaction();
+        Long id = (Long) getSession().save(o);
+        transaction.commit();
+        return (PK) id;
     }
 
-    @Override
-    public void update(T transientObject) throws SQLException, ClassNotFoundException, IllegalAccessException, ParseException {
-        utils.updateEntityInDb(utils.entityToSqlUpdateQuery(transientObject), transientObject);
+    public T read(PK id) {
+        return (T) getSession().load(type, id);
     }
 
-    @Override
-    public void delete(T transientObject) throws SQLException, NoSuchFieldException, ClassNotFoundException, IllegalAccessException {
-        utils.deleteEntityFromDb(transientObject);
+    public void update(T o) {
+        Transaction transaction = session.beginTransaction();
+        getSession().update(o);
+        transaction.commit();
     }
 
-    @Override
-    public List<T> findAll() throws SQLException, ClassNotFoundException {
-        return utils.getAllEntityFromDb(type);
+    public void delete(T o) {
+        Transaction transaction = session.beginTransaction();
+        getSession().delete(o);
+        transaction.commit();
+
+    }
+
+    public List<T> findAll() {
+        return getSession().createQuery("select x from " + type.getName() + " x", type).getResultList();
     }
 }

@@ -1,18 +1,18 @@
 package eu.senla.shabalin.dao.interfaces;
 
+import org.hibernate.Session;
+
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
-public interface AbstractDao <T extends Serializable> {
-    Long create(T newInstance) throws ClassNotFoundException, SQLException, IllegalAccessException, ParseException;
+public interface AbstractDao <T, PK extends Serializable> {
+    PK create(T newInstance);
 
-    T read(Long id) throws SQLException, ClassNotFoundException;
+    T read(PK id);
 
-    void update(T transientObject) throws SQLException, ClassNotFoundException, IllegalAccessException, ParseException;
+    void update(T transientObject);
 
-    void delete(T persistentObject) throws SQLException, NoSuchFieldException, ClassNotFoundException, IllegalAccessException;
+    void delete(T persistentObject);
 
-    List<T> findAll() throws SQLException, ClassNotFoundException;
+    List<T> findAll();
 }
