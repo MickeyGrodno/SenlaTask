@@ -10,8 +10,10 @@ import eu.senla.shabalin.entity.Customer;
 import eu.senla.shabalin.entity.Orders;
 import eu.senla.shabalin.entity.Product;
 import eu.senla.shabalin.utils.HibernateSessionFactoryUtil;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.TypeMismatchException;
 import org.hibernate.query.NativeQuery;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -26,8 +28,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class OrderProductTest {
@@ -44,7 +45,7 @@ public class OrderProductTest {
         ordersDao = new OrdersDaoImpl(session);
         productDao = new ProductDaoImpl(session);
 
-        Customer customer1 = new Customer(1L, "Sergei", "Petrov", 25, new ArrayList<>());
+        Customer customer1 = new Customer("Sergei", "Petrov", 25);
         Customer customer2 = new Customer("Vasia", "Sidorov", 30);
         Customer customer3 = new Customer("Vera", "Ivanova", 28);
         Customer customer4 = new Customer("Ivan", "Petrovivh", 50);
@@ -82,6 +83,13 @@ public class OrderProductTest {
     }
 
     @Test
+    public void readCustomerTest() {
+        long id = (long) customerDao.create(new Customer("VasiaTester", "Sidorov", 30));
+        Customer customer = (Customer) customerDao.read(id);
+        assertEquals("VasiaTester", customer.getFirstName());
+    }
+
+    @Test
     public void createCustomerTest() {
         Customer customer = new Customer("Name","LastName", 99);
         long id = (long) customerDao.create(customer);
@@ -93,13 +101,37 @@ public class OrderProductTest {
         Customer customer = new Customer("Name","LastName", 99);
         customer.setId((long) customerDao.create(customer));
         customerDao.delete(customer);
-        customerDao.read(customer);
+        Customer customerFromDb1 = ((Customer) customerDao.read(customer.getId()));
+        assertThrows(ObjectNotFoundException.class, () -> {
+            Customer customerFromDb = ((Customer) customerDao.read(customer.getId()));
+            customerFromDb.getId();
+        });
+
+//        assertEquals(ObjectNotFoundException.class, thrown.getClass());
+//        Customer customerFromDb = (Customer) customerDao.read(customer.getId());
+//        System.out.println();
+//        assertNull(customerFromDb);
+    }
+
+    @Test
+    public void updateCustomerTest() {
+        Customer customer = new Customer("Name","LastName", 99);
+        customer.setId((Long) customerDao.create(customer));
+        customer.setFirstName("Updated FirstName");
+        customerDao.update(customer);
+        Customer customerFromDb = (Customer) customerDao.read(customer.getId());
+        assertEquals(customer.getFirstName(), customerFromDb.getFirstName());
+    }
+
+    @Test
+    public void readAllCustomers() {
+        assertTrue(customerDao.findAll().size()>0);
     }
 
     @AfterAll
     public static void clearAllTables() {
-//        Transaction transaction = session.beginTransaction();
-//        session.createSQLQuery("TRUNCATE customer, order_product, orders, product").executeUpdate();
-//        transaction.commit();
+        Transaction transaction = session.beginTransaction();
+        session.createSQLQuery("TRUNCATE customer, order_product, orders, product").executeUpdate();
+        transaction.commit();
     }
 }
