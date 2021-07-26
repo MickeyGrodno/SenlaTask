@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
-public class Product implements eu.senla.shabalin.entity.Entity, Serializable {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)

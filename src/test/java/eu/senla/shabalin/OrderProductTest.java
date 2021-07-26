@@ -11,6 +11,11 @@ import eu.senla.shabalin.entity.Orders;
 import eu.senla.shabalin.entity.Product;
 import eu.senla.shabalin.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class OrderProductTest {
 
@@ -73,7 +82,24 @@ public class OrderProductTest {
     }
 
     @Test
-    public void createAndReadCustomerTest() throws SQLException, ParseException, ClassNotFoundException, IllegalAccessException {
+    public void createCustomerTest() {
         Customer customer = new Customer("Name","LastName", 99);
+        long id = (long) customerDao.create(customer);
+        assertNotNull(id);
+    }
+
+    @Test
+    public void deleteCustomerTest() {
+        Customer customer = new Customer("Name","LastName", 99);
+        customer.setId((long) customerDao.create(customer));
+        customerDao.delete(customer);
+        customerDao.read(customer);
+    }
+
+    @AfterAll
+    public static void clearAllTables() {
+//        Transaction transaction = session.beginTransaction();
+//        session.createSQLQuery("TRUNCATE customer, order_product, orders, product").executeUpdate();
+//        transaction.commit();
     }
 }

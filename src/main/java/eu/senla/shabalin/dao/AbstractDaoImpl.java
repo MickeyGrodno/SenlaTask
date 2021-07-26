@@ -23,7 +23,7 @@ public class AbstractDaoImpl<T, PK extends Serializable> implements AbstractDao<
     }
 
     public PK create(T o) {
-        Transaction transaction = session.beginTransaction();
+        transaction = session.beginTransaction();
         Long id = (Long) getSession().save(o);
         transaction.commit();
         return (PK) id;
@@ -34,13 +34,13 @@ public class AbstractDaoImpl<T, PK extends Serializable> implements AbstractDao<
     }
 
     public void update(T o) {
-        Transaction transaction = session.beginTransaction();
+        transaction = session.beginTransaction();
         getSession().update(o);
         transaction.commit();
     }
 
     public void delete(T o) {
-        Transaction transaction = session.beginTransaction();
+        transaction = session.beginTransaction();
         getSession().delete(o);
         transaction.commit();
 

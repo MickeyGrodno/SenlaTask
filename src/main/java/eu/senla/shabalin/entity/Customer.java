@@ -19,7 +19,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "customer")
-public class Customer implements eu.senla.shabalin.entity.Entity, Serializable {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)

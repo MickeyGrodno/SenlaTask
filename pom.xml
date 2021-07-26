@@ -51,16 +51,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate}</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>3.2.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.5.6-Final</version>
-        </dependency>
     </dependencies>
 
 </project>

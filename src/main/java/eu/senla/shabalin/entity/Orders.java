@@ -21,7 +21,7 @@ import org.hibernate.annotations.CascadeType;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
-public class Orders implements eu.senla.shabalin.entity.Entity, Serializable {
+public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
