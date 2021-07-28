@@ -1,0 +1,15 @@
+package eu.senla.shabalin;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class SimpleMathTest {
+    private final int firstNumber = Integer.parseInt(System.getProperty("FIRST_NUMBER"));
+    private final int secondNumber = Integer.parseInt(System.getProperty("SECOND_NUMBER"));
+
+    @Test
+    public void sumExampleTest() {
+        int result = firstNumber+secondNumber;
+        Assertions.assertTrue(result>0);
+    }
+}

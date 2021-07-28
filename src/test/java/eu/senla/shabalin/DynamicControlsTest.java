@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+@Disabled
 public class DynamicControlsTest extends DataFixture {
     private DynamicControls controls;
 

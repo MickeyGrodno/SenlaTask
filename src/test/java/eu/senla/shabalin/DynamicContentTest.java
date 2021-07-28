@@ -3,9 +3,11 @@ package eu.senla.shabalin;
 import eu.senla.shabalin.pageobjects.DynamicContent;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+@Disabled
 public class DynamicContentTest extends DataFixture {
 
     @Test
