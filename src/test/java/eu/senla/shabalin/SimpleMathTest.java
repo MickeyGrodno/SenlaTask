@@ -12,6 +12,6 @@ public class SimpleMathTest {
         System.out.println(firstNumber);
         System.out.println(secondNumber);
         int result = firstNumber+secondNumber;
-        Assertions.assertTrue(result>0);
+        Assertions.assertEquals(0, result);
     }
 }
