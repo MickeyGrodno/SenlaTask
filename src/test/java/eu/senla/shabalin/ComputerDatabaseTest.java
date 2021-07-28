@@ -1,9 +1,11 @@
 package eu.senla.shabalin;
 
+import com.codeborne.selenide.Selenide;
 import eu.senla.shabalin.enums.Column;
 import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.pageobjects.ComputerDatabasePage;
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,11 @@ public class ComputerDatabaseTest {
     @BeforeEach
     public void beforeTest() {
         page.openFirstPage();
+    }
+
+    @AfterEach
+    public void afterTest() {
+        Selenide.closeWebDriver();
     }
 
     @Test
@@ -83,7 +90,7 @@ public class ComputerDatabaseTest {
         page.sortAllBy(Column.COMPANY, SortBy.DESC);
         List<String> penultimatePageList = page.getComputerColumnInString(Column.COMPANY);
 
-        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.ASC,
+        Pair<List<String>, List<String>> sortedPairList = Utils.collectionSorter(SortBy.DESC,
                 new ArrayList<>(firstPageList), new ArrayList<>(penultimatePageList));
 
         Utils.beforeAndAfterTwoCollectionAssertion(firstPageList, sortedPairList.getLeft(),
