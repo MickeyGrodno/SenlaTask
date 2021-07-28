@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import static eu.senla.shabalin.Utils.getExpectedParametersOnTxt;
 import static eu.senla.shabalin.Utils.takeScreenShot;
 
-@Disabled
 public class LoginPageTest extends DataFixture {
     private LoginPage loginPage;
     private final String correctLogin = property.getProperty("correctLogin");
