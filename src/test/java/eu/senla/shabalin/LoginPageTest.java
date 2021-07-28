@@ -2,24 +2,12 @@ package eu.senla.shabalin;
 
 import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import static eu.senla.shabalin.Utils.getExpectedParametersOnTxt;
+import static eu.senla.shabalin.Utils.takeScreenShot;
 
 public class LoginPageTest extends DataFixture {
     private LoginPage loginPage;
@@ -40,47 +28,6 @@ public class LoginPageTest extends DataFixture {
         assertions.assertThat(loginPage.getAlertMessage()).as("check message").isEqualTo(alertMessage);
         assertions.assertAll();
     }
-
-    @Attachment
-    private byte[] takeScreenShot() {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(
-                    new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())),
-                    "png",
-                    baos);
-            baos.flush();
-            byte[] imageInByte = baos.toByteArray();
-            baos.close();
-            return imageInByte;
-        } catch (AWTException | IOException e) {
-            System.err.println("Failed to create or save screenshot");
-        }
-        return null;
-    }
-
-    @Attachment(value = "Вложение")
-    private byte[] getExpectedParametersOnTxt(String pageUrl, String alertMessage) {
-        List<String> list = Arrays.asList(pageUrl, alertMessage);
-        String fileDirectory;
-        if(System.getProperty("os.name").equals("Linux")) {
-            fileDirectory = "src/main/resources/testreportdata/";
-        } else {
-            fileDirectory = "src\\main\\resources\\testreportdata\\";
-        }
-        Path file = Paths.get(fileDirectory + LocalDateTime.now());
-        try {
-            Files.write(file, list, StandardCharsets.UTF_8);
-            return Files.readAllBytes(file);
-        } catch (IOException e) {
-            System.err.println("File not found!");
-        }
-        return null;
-    }
-
-
-
-
 
     @Test
     public void loginWithIncorrectLoginAndIncorrectPassword() {
