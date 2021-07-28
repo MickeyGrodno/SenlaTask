@@ -101,13 +101,11 @@ public class OrderProductTest {
         Customer customer = new Customer("Name","LastName", 99);
         customer.setId((long) customerDao.create(customer));
         customerDao.delete(customer);
-        Customer customerFromDb1 = ((Customer) customerDao.read(customer.getId()));
         assertThrows(ObjectNotFoundException.class, () -> {
             Customer customerFromDb = ((Customer) customerDao.read(customer.getId()));
-            customerFromDb.getId();
+            customerFromDb.setId(10L);
         });
 
-//        assertEquals(ObjectNotFoundException.class, thrown.getClass());
 //        Customer customerFromDb = (Customer) customerDao.read(customer.getId());
 //        System.out.println();
 //        assertNull(customerFromDb);
