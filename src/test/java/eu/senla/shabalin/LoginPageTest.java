@@ -4,11 +4,13 @@ import eu.senla.shabalin.pageobjects.LoginPage;
 import eu.senla.shabalin.pageobjects.MainPage;
 import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static eu.senla.shabalin.Utils.getExpectedParametersOnTxt;
 import static eu.senla.shabalin.Utils.takeScreenShot;
 
+@Disabled
 public class LoginPageTest extends DataFixture {
     private LoginPage loginPage;
     private final String correctLogin = property.getProperty("correctLogin");
