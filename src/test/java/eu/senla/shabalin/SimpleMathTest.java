@@ -9,6 +9,8 @@ public class SimpleMathTest {
 
     @Test
     public void sumExampleTest() {
+        System.out.println(firstNumber);
+        System.out.println(secondNumber);
         int result = firstNumber+secondNumber;
         Assertions.assertTrue(result>0);
     }
