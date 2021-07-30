@@ -29,6 +29,11 @@ public class SimpleMathTest {
 
     @BeforeAll
     public static void beforeAllTest() {
+        String directory = System.getProperty("user.dir")+"/extent-report/";
+        File fileDirectory = new File(directory);
+        if(!fileDirectory.exists()) {
+            fileDirectory.mkdir();
+        }
         ExtentHtmlReporter extent = new ExtentHtmlReporter(
                 new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep.html"));
         report = new ExtentReports();
