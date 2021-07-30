@@ -1,14 +1,13 @@
 package eu.senla.shabalin;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import eu.senla.shabalin.enums.Column;
 import eu.senla.shabalin.enums.SortBy;
 import eu.senla.shabalin.pageobjects.ComputerDatabasePage;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,10 @@ import static com.codeborne.selenide.Selenide.executeJavaScript;
 public class ComputerDatabaseTest {
     private ComputerDatabasePage page = new ComputerDatabasePage();
 
+    @BeforeAll
+    public static void browserConfiguration() {
+        WebDriverManager.chromedriver().browserVersion("92");
+    }
     @BeforeEach
     public void beforeTest() {
         page.openFirstPage();

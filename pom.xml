@@ -14,7 +14,7 @@
         <lombok>1.18.20</lombok>
         <junit5>5.4.0</junit5>
         <assertj>3.20.2</assertj>
-        <selenide>5.22.3</selenide>
+        <selenide>5.23.0</selenide>
     </properties>
 
     <dependencies>
