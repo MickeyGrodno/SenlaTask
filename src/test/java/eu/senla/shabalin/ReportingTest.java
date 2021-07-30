@@ -16,26 +16,7 @@ import static com.codeborne.selenide.WebDriverRunner.url;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Disabled
-public class ReportingTest {
-    private static ExtentReports report;
-
-    @RegisterExtension
-    public CustomTestWatcher watcher = new CustomTestWatcher(report);
-
-    @BeforeAll
-    public static void beforeAll() {
-        String directory = System.getProperty("user.dir")+"/extent-report/";
-        File fileDirectory = new File(directory);
-        if(!fileDirectory.exists()) {
-            fileDirectory.mkdir();
-        }
-
-
-        ExtentHtmlReporter extent = new ExtentHtmlReporter(
-                new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep"+Utils.getCurrentDateTime()+".html"));
-        report = new ExtentReports();
-        report.attachReporter(extent);
-    }
+public class ReportingTest extends Fixture{
 
     @Test
     public void exampleTest() {

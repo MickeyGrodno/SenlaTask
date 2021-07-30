@@ -15,7 +15,9 @@ public class CustomTestWatcher implements TestWatcher {
 
     @Override
     public void testSuccessful(ExtensionContext context) {
+
         ExtentTest logger = report.createTest(context.getDisplayName(), "Test Success");
+        logger.info("Start "+context.getDisplayName());
         logger.log(Status.PASS, "Success");
         report.flush();
     }
@@ -23,7 +25,8 @@ public class CustomTestWatcher implements TestWatcher {
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         ExtentTest logger = report.createTest(context.getDisplayName(), "Test Failed");
-        String path = Utils.getScreenshotPath();
+        logger.info("Start "+context.getDisplayName());
+//        String path = Utils.getScreenshotPath();
         logger.fail("Test FAILED!");
 //        try {
 //            logger.fail("Test FAILED!", MediaEntityBuilder.createScreenCaptureFromBase64String(path).build());
