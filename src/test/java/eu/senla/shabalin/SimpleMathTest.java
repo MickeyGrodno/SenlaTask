@@ -41,7 +41,7 @@ public class SimpleMathTest {
         }
 
         ExtentHtmlReporter extent = new ExtentHtmlReporter(
-                new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep"+Utils.getCurrentDateTime()+".html"));
+                new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep.html"));
         report = new ExtentReports();
         report.attachReporter(extent);
     }
