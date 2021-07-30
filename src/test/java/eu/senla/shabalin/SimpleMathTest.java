@@ -15,7 +15,6 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled
 public class SimpleMathTest {
     private final int firstNumber = Integer.parseInt(System.getProperty("FIRST_NUMBER"));
     private final int secondNumber = Integer.parseInt(System.getProperty("SECOND_NUMBER"));
