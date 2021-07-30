@@ -51,7 +51,6 @@ public class SimpleMathTest {
         logger.info("Start sum example test");
         int result = firstNumber + secondNumber;
         Assertions.assertTrue(result > 0);
-        logger.pass("Test passed");
     }
 
     @Test
@@ -70,12 +69,6 @@ public class SimpleMathTest {
     public void choiceTestResultTest() {
         logger = report.createTest("Manual selection of test result");
         assertEquals("successful", testResult);
-    }
-
-    @AfterEach
-    public void afterTest() {
-
-        report.flush();
     }
 
 //    @AfterAll
