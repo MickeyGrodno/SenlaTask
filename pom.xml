@@ -20,6 +20,7 @@
         <aspectj.version>1.9.5</aspectj.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <extentreports>3.1.5</extentreports>
     </properties>
 
     <dependencies>
@@ -84,6 +85,11 @@
             <artifactId>cucumber-java</artifactId>
             <version>1.2.3</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports}</version>
         </dependency>
 
     </dependencies>
@@ -153,6 +159,7 @@
                         <artifactId>aspectjweaver</artifactId>
                         <version>${aspectj.version}</version>
                     </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -188,11 +195,6 @@
                     <reportVersion>${allure.version}</reportVersion>
                 </configuration>
 
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.0.0-M5</version>
             </plugin>
         </plugins>
     </reporting>
