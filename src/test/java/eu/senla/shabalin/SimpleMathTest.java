@@ -3,17 +3,19 @@ package eu.senla.shabalin;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.engine.descriptor.DynamicExtensionContext;
+import org.junit.platform.engine.TestExecutionResult;
 import org.opentest4j.AssertionFailedError;
 
 import java.io.File;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class SimpleMathTest {
     private final int firstNumber = Integer.parseInt(System.getProperty("FIRST_NUMBER"));
     private final int secondNumber = Integer.parseInt(System.getProperty("SECOND_NUMBER"));
@@ -27,6 +29,9 @@ public class SimpleMathTest {
     private static ExtentReports report;
     private static ExtentTest logger;
 
+    @RegisterExtension
+    public CustomTestWatcher watcher = new CustomTestWatcher(report);
+
     @BeforeAll
     public static void beforeAllTest() {
         String directory = System.getProperty("user.dir")+"/extent-report/";
@@ -34,25 +39,22 @@ public class SimpleMathTest {
         if(!fileDirectory.exists()) {
             fileDirectory.mkdir();
         }
+
         ExtentHtmlReporter extent = new ExtentHtmlReporter(
-                new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep.html"));
+                new File(System.getProperty("user.dir")+"/extent-report/extHtmlRep"+Utils.getCurrentDateTime()+".html"));
         report = new ExtentReports();
         report.attachReporter(extent);
     }
 
     @Test
     public void sumExampleTest() {
-        try {
-            logger = report.createTest("Sum example");
-            logger.info("Start sum example test");
-            int result = firstNumber + secondNumber;
-            Assertions.assertTrue(result > 0);
-            logger.pass("Test passed");
-        } catch (AssertionFailedError e) {
-            logger.fail("Test failed");
-            e.printStackTrace();
-        }
+        logger = report.createTest("Sum example");
+        logger.info("Start sum example test");
+        int result = firstNumber + secondNumber;
+        Assertions.assertTrue(result > 0);
+        logger.pass("Test passed");
     }
+
     @Test
     public void minusExampleTest() {
         logger = report.createTest("Minus example");
@@ -71,8 +73,17 @@ public class SimpleMathTest {
         assertEquals("successful", testResult);
     }
 
-    @AfterAll
-    public static void afterAllTest() {
+    @AfterEach
+    public void afterTest() {
+
         report.flush();
     }
+
+//    @AfterAll
+//    public static void afterAllTest() {
+//        AfterTestExecutionCallback callback = new AfterTestExecutionCallback() {
+//        }
+//        if(new TestExecutionResult.Status().)
+//        report.flush();
+//    }
 }
