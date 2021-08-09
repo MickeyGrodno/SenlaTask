@@ -1,5 +1,6 @@
 package eu.senla.shabalin.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +13,15 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 public class Worker {
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("job")
     private String job;
-    private int id;
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("createdAt")
     private String createdAt;
+    @JsonProperty("updatedAt")
     private String updatedAt;
 
     public Worker(String name, String job) {

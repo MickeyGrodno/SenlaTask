@@ -1,17 +1,25 @@
 package eu.senla.shabalin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import eu.senla.shabalin.entity.Resource;
-import eu.senla.shabalin.entity.User;
-import eu.senla.shabalin.entity.Worker;
+import eu.senla.shabalin.entity.*;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RestAssuredTest {
@@ -35,8 +43,9 @@ public class RestAssuredTest {
     @Test
     public void getSingleUserTest() {
         Response response = given()
+                .queryParam("id",2)
                 .when()
-                .get("https://reqres.in/api/users/2")
+                .get("https://reqres.in/api/users/")
                 .then()
                 .statusCode(200)
                 .body("data.id", equalTo(2))
@@ -128,6 +137,7 @@ public class RestAssuredTest {
                 .then()
                 .statusCode(200)
                 .extract().response();
+
         worker = (Worker) Mapper.mapJsonFromResponseToDataObject(response, Worker.class);
         worker.toString();
         assertions.assertThat(worker.getName()).isEqualTo("morpheus");
@@ -174,7 +184,7 @@ public class RestAssuredTest {
     public void loginSuccessfulTest() {
         String json = "{\"email\":\"eve.holt@reqres.in\", \"password\": \"cityslicka\"}";
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body(json)
                 .when().post("https://reqres.in/api/register").then()
                 .statusCode(200)
@@ -195,8 +205,58 @@ public class RestAssuredTest {
         assertEquals(6, userList.size());
     }
 
+    @Test
+    public void restAssured1Test() {
+        RestAssured.baseURI = "https://reqres.in/";
+        Response response = given()
+//                    .queryParam("id",2)
+                .when()
+                .get("api/users/{id}", 2)
+                .then()
+                .statusCode(200)
+                .body("data.id", equalTo(2))
+                .extract().response();
 
-        // Способ №1
+        System.out.println("getSingleUserTest body");
+        response.getBody().print();
+    }
+
+    @Test
+    public void restAssured2Test() {
+        RequestSpecification specification = new RequestSpecBuilder()
+                .setBaseUri("https://reqres.in/")
+                .log(LogDetail.ALL)
+                .build();
+
+        ResponseSpecification responseSpec = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody(containsString("2"))
+                .build();
+
+        RestAssured.requestSpecification = specification;
+        RestAssured.responseSpecification =responseSpec;
+        given()
+                .when()
+                .get("api/users/{id}", 2)
+                .then()
+                .spec(responseSpec);
+    }
+
+    @Test
+    public void getSingleUserAutoMappingTest1() {
+        User user = given()
+                .queryParam("id", 2)
+                .when()
+                .get("https://reqres.in/api/users/2")
+                .then()
+                .statusCode(200)
+                .extract()
+                .jsonPath().getObject("data", User.class);
+
+
+        System.out.println("getSingleUserTest body");
+    }
+    // Способ №1
 //        String allJson = response.body().asString();
 //        JSONObject jsonObject = new JSONObject(allJson);
 //        JSONArray data = jsonObject.getJSONArray("data");

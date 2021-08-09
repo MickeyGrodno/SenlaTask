@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class Mapper {
-    private static ObjectMapper objectMapper = new ObjectMapper();;
+    private static ObjectMapper objectMapper = new ObjectMapper();
     public static List<?> mapJsonFromResponseToDataList(Response response, Class<?> clazz) throws JsonProcessingException {
         String allJson = response.body().asString();
         JSONObject jsonObject = new JSONObject(allJson);
