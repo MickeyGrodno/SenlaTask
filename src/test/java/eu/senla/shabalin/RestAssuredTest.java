@@ -14,6 +14,8 @@ import io.restassured.specification.ResponseSpecification;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -244,18 +246,33 @@ public class RestAssuredTest {
 
     @Test
     public void getSingleUserAutoMappingTest1() {
-        User user = given()
-                .queryParam("id", 2)
+//        List<User> user = given()
+//                .queryParam("id", 2)
+//                .when()
+//                .get("https://reqres.in/api/users?page=2")
+//                .then()
+//                .statusCode(200)
+//                .extract()
+//                .jsonPath().getList("data",  User.class);
+//
+//
+//        System.out.println("getSingleUserTest body");
+//    }
+
+        JsonPath jsonPath = given()
+//                .queryParam("id", 2)
                 .when()
-                .get("https://reqres.in/api/users/2")
+                .get("https://reqres.in/api/users?page=2")
                 .then()
                 .statusCode(200)
                 .extract()
-                .jsonPath().getObject("data", User.class);
+                .response().jsonPath();
 
-
+        List<User> data = jsonPath.getList("data", User.class);
         System.out.println("getSingleUserTest body");
     }
+
+
     // Способ №1
 //        String allJson = response.body().asString();
 //        JSONObject jsonObject = new JSONObject(allJson);
